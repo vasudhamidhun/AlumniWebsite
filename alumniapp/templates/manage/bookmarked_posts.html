@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Saved Posts</title>
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: #f4f6f9;
+    }
+
+    h2 {
+      text-align: center;
+      margin: 20px 0;
+      color: #333;
+    }
+
+    .posts-container {
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .post {
+      background: #fff;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+    }
+
+    .post-header img {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .badge {
+      background: #ff9800;
+      color: #fff;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      margin-left: auto;
+    }
+
+    .post-caption {
+      padding: 0 12px 12px;
+      color: #444;
+      line-height: 1.5;
+    }
+
+    .post-img {
+      width: 100%;
+      max-height: 350px;
+      object-fit: cover;
+    }
+
+    .post-actions {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-top: 1px solid #eee;
+    }
+
+    .post-actions a {
+      text-decoration: none;
+      color: #555;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .post-actions a:hover {
+      color: #1976d2;
+    }
+
+    .remove {
+      color: #d32f2f;
+    }
+
+    .empty {
+      text-align: center;
+      color: #777;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+
+<body>
+
+{% include 'partials/navbar.html' %}
+
+<h2>🔖 Saved Posts</h2>
+
+<div class="posts-container">
+
+{% if posts %}
+  {% for p in posts %}
+    <div class="post">
+
+      <div class="post-header">
+        {% if p.admin %}
+          <img src="/media/logo/WhatsApp Image 2026-01-14 at 10.34.07 AM.jpeg" alt="Admin">
+          <strong>{{ p.admin.username }}</strong>
+          <span class="badge">Admin</span>
+        {% else %}
+          <img src="{% if p.alumni.alumniprofile.profile_photo %}
+                      {{ p.alumni.alumniprofile.profile_photo.url }}
+                    {% else %}
+                      /static/default.png
+                    {% endif %}">
+          <strong>{{ p.alumni.username }}</strong>
+        {% endif %}
+      </div>
+
+      <p class="post-caption">{{ p.caption }}</p>
+
+      {% if p.image %}
+        <img src="{{ p.image.url }}" class="post-img">
+      {% endif %}
+
+      <div class="post-actions">
+        <a href="{% url 'toggle_like' p.id %}">
+          <span class="material-icons">thumb_up</span>
+          {{ p.likes.count }}
+        </a>
+
+        <a class="remove" href="{% url 'bookmark' p.id %}">
+          <span class="material-icons">bookmark_remove</span>
+          Remove
+        </a>
+      </div>
+
+    </div>
+  {% endfor %}
+{% else %}
+  <p class="empty">No bookmarked posts yet.</p>
+{% endif %}
+
+</div>
+
+</body>
+</html>

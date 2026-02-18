@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Student</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+        }
+
+        /* MAIN CONTENT AREA (after sidebar) */
+        .main-content {
+            margin-left: 260px; /* SAME as sidebar width */
+            padding: 50px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .form-container {
+            background: #fff;
+            padding: 30px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            width: 380px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #1A2A5E;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 10px 5px;
+            border: none;
+            border-bottom: 2px solid #ccc;
+            outline: none;
+            font-size: 16px;
+            background: transparent;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            border-bottom-color: #007bff;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #007bff;
+            border: none;
+            border-radius: 25px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .messages {
+            margin-bottom: 15px;
+            color: green;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .errorlist {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ✅ ADMIN SIDEBAR -->
+{% include 'partials/adminsidebar.html' %}
+
+<!-- ✅ MAIN CONTENT -->
+<div class="main-content">
+    <div class="form-container">
+        <h2>Add Student</h2>
+
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="input-group">
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="errorlist">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit">Add Student</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

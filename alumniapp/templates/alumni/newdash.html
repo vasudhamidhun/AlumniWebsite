@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Linked Alumni Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<style>
+*{box-sizing:border-box;}
+
+body{
+    margin:0;
+    font-family:"Segoe UI", Roboto, Arial, sans-serif;
+    background:#f3f2ef;
+    overflow:hidden;
+}
+
+/* ================= HEADER ================= */
+.logo img{
+    height: 48px;              /* ⬅ Bigger logo */
+    width: 48px;               /* Keep it square for perfect round */
+    border-radius: 50%;        /* ⬅ Fully rounded */
+    object-fit: cover;         /* Prevent image distortion */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15); /* Subtle premium look */
+    background: #fff;
+}
+.header{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:64px;
+    background:#fff;
+    box-shadow:0 1px 4px rgba(0,0,0,.15);
+    z-index:1000;
+}
+
+.header-inner{
+    max-width:1100px;
+    margin:auto;
+    height:100%;
+    display:flex;
+    align-items:center;
+    padding:0 16px;
+}
+
+.header-left{
+    width:240px;
+    font-size:20px;
+    font-weight:600;
+    color:#0a66c2;
+}
+
+.header-center{
+    flex:1;
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.search-box input{
+    width:260px;
+    padding:8px 12px;
+    border-radius:6px;
+    border:1px solid #ccc;
+    background:#eef3f8;
+}
+
+.nav-icons{
+    display:flex;
+    gap:18px;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: #555;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 72px;          /* ✅ fixed width prevents shifting */
+    position: relative;  /* move relative here instead */
+}
+
+.nav-item span{font-size:26px;}
+.nav-item:hover{color:#0a66c2;}
+
+.header-right{
+    width:260px;
+    text-align:right;
+}
+
+/* ================= MESSAGE BADGE ================= */
+.message-item {
+    position: relative;
+}
+.message-badge {
+    position: absolute;
+    top: -6px;
+    right: 0;
+
+    min-width: 18px;          /* minimum width for single digit */
+    height: 20px;             /* matches font comfortably */
+    padding: 0 5px;           /* extra space for 2 digits */
+
+    background: #ff3b30;
+    color: #fff;
+
+    font-size: 6px;          /* readable and fits inside */
+    font-weight: 300;
+    text-align: center;
+    line-height: 18px;        /* vertical centering */
+
+    border-radius: 50%;       /* circle for single digit, pill for 2+ */
+    box-shadow: 0 0 0 2px #fff; /* white ring */
+    display: inline-block;
+    white-space: nowrap;      /* prevents number wrap */
+}
+
+
+
+
+/* ================= MAIN GRID ================= */
+.main{
+    position:fixed;
+    top:64px;
+    left:50%;
+    transform:translateX(-50%);
+    width:1100px;
+    height:calc(100vh - 64px);
+
+    display:grid;
+    grid-template-columns:240px 600px 260px;
+    gap:16px;
+}
+
+/* ================= LEFT SIDEBAR ================= */
+.sidebar{
+    background:#f0f0f0;
+    padding:16px;
+    border-radius:10px;
+}
+
+.sidebar-profile{
+    text-align:center;
+    margin-bottom:16px;
+}
+
+.sidebar-profile img{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.sidebar-profile h4{margin:8px 0 4px;}
+.sidebar-profile p{font-size:13px;color:#666;}
+
+.sidebar a{
+    display:block;
+    padding:10px;
+    margin-top:6px;
+    text-decoration:none;
+    color:#333;
+    border-radius:6px;
+}
+
+.sidebar a:hover{background:#e6e6e6;}
+.logout-btn{background:#d9534f;color:#fff !important;}
+
+/* ================= FEED (ONLY SCROLLS) ================= */
+.feed{
+    overflow-y:auto;
+    padding-right:6px;
+}
+
+/* ================= POSTS ================= */
+.post{
+    background:#fff;
+    border-radius:10px;
+    padding:14px;
+    margin-bottom:14px;
+    box-shadow:0 1px 2px rgba(0,0,0,.15);
+}
+
+.post-header{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.post-header img{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.post-img{
+    width:100%;
+    border-radius:8px;
+    margin-top:10px;
+}
+
+.post-actions{
+    display:flex;
+    gap:20px;
+    margin-top:10px;
+}
+
+/* ================= CREATE POST ================= */
+.create-post textarea{
+    width:100%;
+    padding:8px;
+    border-radius:6px;
+    border:1px solid #ccc;
+}
+
+.create-post button{
+    margin-top:8px;
+    padding:6px 14px;
+    border:none;
+    border-radius:20px;
+    background:#0a66c2;
+    color:#fff;
+    cursor:pointer;
+}
+
+/* ================= COMMENTS ================= */
+.comment,.like,.bookmark{
+    background:#eef3f8;
+    padding:6px 10px;
+    border-radius:6px;
+    margin-top:6px;
+}
+.comment {
+    cursor: pointer;
+    pointer-events: auto;
+    z-index: 999;
+}
+
+/* ================= RIGHT SIDEBAR ================= */
+.suggestions{
+    background:#fff;
+    padding:16px;
+    border-radius:10px;
+    box-shadow:0 1px 2px rgba(0,0,0,.15);
+}
+
+.suggestion{
+    display:flex;
+    gap:10px;
+    margin-bottom:12px;
+}
+
+.suggestion img{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    object-fit:cover;
+}
+.suggestion-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.suggestion {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.suggestion:hover {
+    background: #eef3f8;
+}
+
+
+.follow-btn{
+    margin-left:auto;
+    padding:4px 12px;
+    border-radius:16px;
+    border:1px solid #0a66c2;
+    background:#fff;
+    color:#0a66c2;
+    cursor:pointer;
+}
+/* ================= NOTIFICATION ================= */
+.nav-item.notification {
+    position: relative;
+}
+
+.nav-item.notification .material-icons {
+    font-size: 26px;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    background: #e0245e;        /* red */
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    min-width: 18px;
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 50%;
+    padding: 0 5px;
+    box-shadow: 0 0 0 2px #fff; /* white ring like LinkedIn */
+}
+
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:1200px){
+    .main{
+        width:100%;
+        grid-template-columns:240px 1fr;
+    }
+    .suggestions{display:none;}
+}
+
+@media(max-width:768px){
+    body{overflow:auto;}
+    .main{
+        position:static;
+        transform:none;
+        grid-template-columns:1fr;
+        height:auto;
+    }
+    .sidebar,.suggestions{display:none;}
+    .feed{overflow:visible;}
+}
+  .post-caption {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+.bookmark {
+  margin-left: 10px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+
+
+
+</style>
+
+<script>
+    function toggleComments(id) {
+      console.log("Clicked post:", id);
+    const el = document.getElementById("comments-" + id);
+
+    if (!el) return;  // prevents JS error
+
+    el.style.display = (el.style.display === "block") ? "none" : "block";
+}
+
+
+  {% if not profile_exists %}
+  setTimeout(function () {
+        alert("Please complete your profile to get better visibility and features.");
+    }, 2000);  // 2 minutes
+  {% endif %}
+</script>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+<div class="header">
+  <div class="header-inner">
+     <div class="header-left logo">
+    <a href="{% url 'dashboard' %}">
+        <img src="/media/logo/WhatsApp Image 2026-01-14 at 10.34.07 AM.jpeg" alt="Linked Alumni">
+    </a>
+</div>
+
+    <div class="header-center">
+      <form method="GET" action="{% url 'alumni_search' %}" class="search-box">
+        <input type="text" name="q" placeholder="Search alumni, jobs">
+      </form>
+
+      <div class="nav-icons">
+        <a href="{% url 'dashboard' %}" class="nav-item">
+          <span class="material-icons">home</span>Home
+        </a>
+        <a href="{% url 'friends_list' %}" class="nav-item">
+          <span class="material-icons">group</span>Network
+        </a>
+        <a href="{% url 'jobs_from_following' %}" class="nav-item">
+          <span class="material-icons">work</span>Jobs
+        </a>
+         <a href="{% url 'messages_dashboard' %}" class="nav-item message-item">
+    <span class="material-icons">messages</span>
+    Messages
+
+    {% if unread_message_count > 0 %}
+        <span class="message-badge" >{{ unread_message_count }}</span>
+    {% endif %}
+</a>
+          <a href="{% url 'notifications' %}" class="nav-item notification">
+    <span class="material-icons">notifications</span>
+    Notifications
+
+    {% if notification_count > 0 %}
+        <span class="notification-badge">{{ notification_count }}</span>
+    {% endif %}
+</a>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <a href="{% url 'user_dashboard' %}">
+        <span class="material-icons">account_circle</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MAIN ================= -->
+<div class="main">
+
+<!-- LEFT SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-profile">
+    <img src="{% if profile.profile_photo %}{{ profile.profile_photo.url }}{% else %}/static/default.png{% endif %}">
+    <h4>{{ user.username }}</h4>
+      <h5>{{ user.role }}</h5>
+    <p>{{ profile.bio|truncatechars:60 }}</p>
+  </div>
+
+  <a href="{% url 'dashboard' %}">Dashboard</a>
+  <a href="{% url 'view_all_events' %}">Events</a>
+  <a href="{% url 'friends_list' %}">Friends</a>
+    <a href="/gallery_list/">View Gallery</a>
+  <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+</div>
+
+<!-- CENTER FEED -->
+<div class="feed">
+{% if role == "alumni" or role == "staff" %}
+
+<div class="post create-post">
+  <form method="POST" action="{% url 'add_post' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <textarea name="caption" placeholder="Start a post..."></textarea>
+    <input type="file" name="image">
+    <button type="submit">Post</button>
+  </form>
+</div>
+  {% endif %}
+
+
+{% for p in posts %}
+<div class="post">
+
+  <div class="post-header">
+    {% if p.admin %}
+      <!-- ADMIN POST -->
+      <img src="/media/logo/WhatsApp Image 2026-01-14 at 10.34.07 AM.jpeg" alt="Admin">
+      <strong>{{ p.admin.username }}</strong>
+      <span class="badge">Admin</span>
+
+    {% else %}
+      <!-- ALUMNI POST -->
+      <img src="{% if p.alumni.alumniprofile.profile_photo %}
+                  {{ p.alumni.alumniprofile.profile_photo.url }}
+                {% else %}
+                  /static/default.png
+                {% endif %}">
+      <strong>{{ p.alumni.username }}</strong>
+    {% endif %}
+  </div>
+
+  <p class="post-caption">{{ p.caption }}</p>
+
+  {% if p.image %}
+    <img src="{{ p.image.url }}" class="post-img">
+  {% endif %}
+
+  <div class="post-actions">
+    <a class="like" href="{% url 'toggle_like' p.id %}">
+      👍 {{ p.likes.count }}
+    </a>
+
+    <span class="comment"
+          onclick="toggleComments({{ p.id }})">
+      💬 {{ p.comments.count }}
+    </span>
+
+     <!-- BOOKMARK BUTTON -->
+  <a class="bookmark" href="{% url 'bookmark' p.id %}">
+    {% if user in p.bookmarks.all %}
+      🔖 Saved
+    {% else %}
+      📑 Save
+    {% endif %}
+  </a>
+  </div>
+
+  <!-- COMMENTS + FORM -->
+  <div id="comments-{{ p.id }}" class="comments-box" style="display:none">
+
+    <!-- Existing comments -->
+    {% for c in p.comments.all %}
+      <div class="comment">
+        <strong>{{ c.user.username }}</strong> {{ c.comment }}
+      </div>
+    {% empty %}
+      <p>No comments yet</p>
+    {% endfor %}
+
+    <!-- Add comment form -->
+    <form method="post"
+          action="{% url 'add_comment' p.id %}">
+      {% csrf_token %}
+      <input type="text"
+             name="comment"
+             placeholder="Write a comment..."
+             required>
+      <button type="submit">Post</button>
+    </form>
+
+  </div>
+
+</div>
+{% endfor %}
+
+</div>
+
+<!-- RIGHT SIDEBAR -->
+<div class="suggestions">
+    <h4>People you may know</h4>
+  {% for a in recommended_alumni %}
+  <a href="{% url 'user_profile' a.user.id %}" class="suggestion-link">
+    <div class="suggestion">
+      <img src="{% if a.profile_photo %}{{ a.profile_photo.url }}{% else %}/static/default.png{% endif %}">
+      <div>
+        <strong>{{ a.user.username }}</strong>
+        <p>Alumni</p>
+      </div>
+    </div>
+  </a>
+{% endfor %}
+
+{% for s in recommended_students %}
+  <a href="{% url 'user_profile' s.user.id %}" class="suggestion-link">
+    <div class="suggestion">
+      <img src="{% if s.profile_photo %}{{ s.profile_photo.url }}{% else %}/static/default.png{% endif %}">
+      <div>
+        <strong>{{ s.user.username }}</strong>
+        <p>Student</p>
+      </div>
+    </div>
+  </a>
+{% endfor %}
+
+
+{% for st in recommended_staffs %}
+  <a href="{% url 'user_profile' st.user.id %}" class="suggestion-link">
+    <div class="suggestion">
+      <img src="{% if st.profile_photo %}{{ st.profile_photo.url }}{% else %}/static/default.png{% endif %}">
+      <div>
+        <strong>{{ st.user.username }}</strong>
+        <p>Staff</p>
+      </div>
+    </div>
+  </a>
+{% endfor %}
+
+</div>
+
+</div>
+
+</body>
+</html>

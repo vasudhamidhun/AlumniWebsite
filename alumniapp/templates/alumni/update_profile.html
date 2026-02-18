@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container mt-4">
+    <h2>Update Your Profile</h2>
+    <hr>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        {% if form.instance.profile_photo %}
+            <p>Current Photo:</p>
+            <img src="{{ form.instance.profile_photo.url }}" width="120" class="img-thumbnail mb-3">
+        {% endif %}
+
+        <button type="submit" class="btn btn-primary">Update Profile</button>
+        <a href="{% url 'user_dashboard' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+</body>
+</html>

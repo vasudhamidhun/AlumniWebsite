@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% load static %}
+    <style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+        width: 260px;
+        height: 100vh;
+        background: #1A2A5E;
+        color: white;
+        position: fixed;
+        top: 0;
+        left: 0;
+        padding-top: 25px;
+        box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+        overflow-y: auto;   /* ✅ IMPORTANT FIX */
+    }
+
+    .sidebar .logo {
+        text-align: center;
+        padding-bottom: 20px;
+    }
+
+    .sidebar .logo img {
+        width: 90px;
+        border-radius: 50%;
+    }
+
+    .sidebar .logo h2 {
+        margin-top: 10px;
+        font-size: 17px;
+        letter-spacing: 0.5px;
+        color:white;
+    }
+
+    .sidebar .menu {
+        list-style: none;
+        padding: 20px;
+        margin: 0;
+    }
+
+    .sidebar .menu li {
+        padding: 12px 15px;
+        margin: 6px 0;
+        cursor: pointer;
+        border-radius: 6px;
+    }
+
+    .sidebar .menu li a {
+        text-decoration: none;
+        color: white;
+        display: block;
+    }
+
+    .sidebar .menu li:hover,
+    .sidebar .menu .active {
+        background: #0d1b3e;
+    }
+</style>
+
+</head>
+<body>
+<div class="sidebar">
+    <div class="logo">
+        <img src="/media/logo/WhatsApp Image 2026-01-14 at 10.34.07 AM.jpeg" alt="Linked Alumni">
+        <h2>St.Teresa's</h2>
+    </div>
+
+    <ul class="menu">
+        <li class="active"><a href="/admindash">Dashboard</a></li>
+        <li><a href="/stafflist/">Add Staff</a></li>
+        <li><a href="/addstud/">Add Student</a></li>
+        <li><a href="/add-event/">Add Event</a></li>
+        <li><a href="{% url 'add_gallery' %}">Add Gallery</a></li>
+        <li><a href="/post/add/">Add Posts</a></li>
+        <li><a href="/fundraising/">Add FundRaising</a></li>
+        <li><a href="/" class="logout-btn">Logout</a></li>
+    </ul>
+</div>
+</body>
+</html>

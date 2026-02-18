@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- ================= ADMIN SIDEBAR ================= -->
+{% if role %}
+    {% include 'partials/navbar.html' %}
+
+{% else %}
+   {% include 'partials/adminsidebar.html' %}
+{% endif %}
+event added succsfully
+</body>
+</html>

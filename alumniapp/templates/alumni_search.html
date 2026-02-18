@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .result-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            text-decoration: none;
+            color: black;
+            transition: background 0.2s ease;
+        }
+
+        .result-row:hover {
+            background: #f8f9fa;
+        }
+
+        .result-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ddd;
+        }
+
+        .result-details h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .result-details p {
+            margin: 3px 0;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .badge {
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-bottom: 4px;
+            display: inline-block;
+        }
+
+        .alumni { background: #e3f2fd; color: #0d47a1; }
+        .student { background: #e8f5e9; color: #1b5e20; }
+        .staff { background: #fff3e0; color: #e65100; }
+
+        h3.section-title {
+            margin-top: 30px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+{% if role %}
+    {% include 'partials/navbar.html' %}
+{% else %}
+    {% include 'partials/adminsidebar.html' %}
+{% endif %}
+<br><br>
+<h2>Search Results for "{{ query }}"</h2>
+
+<!-- ================= ALUMNI RESULTS ================= -->
+{% if alumni_results %}
+<h3 class="section-title">Alumni</h3>
+{% for p in alumni_results %}
+<a class="result-row" href="{% url 'user_profile' p.user.id %}">
+
+    {% if p.profile_photo %}
+        <img src="{{ p.profile_photo.url }}" class="result-img">
+    {% else %}
+        <img src="{% static 'images/default_profile.png' %}" class="result-img">
+    {% endif %}
+
+    <div class="result-details">
+        <span class="badge alumni">Alumni</span>
+        <h3>{{ p.first_name }} {{ p.last_name }}</h3>
+
+        {% if p.current_designation %}
+            <p>{{ p.current_designation }} @ {{ p.current_company }}</p>
+        {% endif %}
+        <p>Batch: {{ p.batch_year }}</p>
+        <p>Location: {{ p.location }}</p>
+    </div>
+</a>
+{% endfor %}
+{% endif %}
+
+<!-- ================= STUDENT RESULTS ================= -->
+{% if student_results %}
+<h3 class="section-title">Students</h3>
+{% for p in student_results %}
+<a class="result-row" href="{% url 'user_profile' p.user.id %}">
+
+    {% if p.profile_photo %}
+        <img src="{{ p.profile_photo.url }}" class="result-img">
+    {% else %}
+        <img src="{% static 'images/default_profile.png' %}" class="result-img">
+    {% endif %}
+
+    <div class="result-details">
+        <span class="badge student">Student</span>
+        <h3>{{ p.first_name }} {{ p.last_name }}</h3>
+
+        <p>{{ p.degree }} – {{ p.branch }}</p>
+        <p>Batch: {{ p.batch_year }}</p>
+
+        {% if p.interests %}
+            <p>Interests: {{ p.interests|truncatewords:8 }}</p>
+        {% endif %}
+    </div>
+</a>
+{% endfor %}
+{% endif %}
+
+<!-- ================= STAFF RESULTS ================= -->
+{% if staff_results %}
+<h3 class="section-title">Staff</h3>
+{% for p in staff_results %}
+<a class="result-row" href="{% url 'user_profile' p.user.id  %}">
+
+    {% if p.profile_photo %}
+        <img src="{{ p.profile_photo.url }}" class="result-img">
+    {% else %}
+        <img src="{% static 'images/default_profile.png' %}" class="result-img">
+    {% endif %}
+
+    <div class="result-details">
+        <span class="badge staff">Staff</span>
+        <h3>{{ p.first_name }} {{ p.last_name }}</h3>
+
+        <p>{{ p.department }} – {{ p.subject }}</p>
+        <p>Since {{ p.start_year }}</p>
+    </div>
+</a>
+{% endfor %}
+{% endif %}
+
+{% if not alumni_results and not student_results and not staff_results %}
+    <p>No matching profiles found.</p>
+{% endif %}
+
+</body>
+</html>

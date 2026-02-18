@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat</title>
+
+    <!-- Icons (optional for navbar) -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            background: #f3f2ef;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        /* Push content below fixed navbar */
+        .page-wrapper {
+            margin-top: 80px;
+        }
+
+        .chat-container {
+            max-width: 720px;
+            margin: 30px auto;
+            background: #fff;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            height: 85vh;
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.08);
+        }
+
+        /* Header */
+        .chat-header {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            font-weight: 600;
+            background: #fff;
+        }
+
+        /* Messages body */
+        .chat-body {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background: #f9fafb;
+        }
+
+        /* Message wrapper */
+        .message {
+            margin-bottom: 10px;
+            max-width: 65%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sender-name {
+            font-size: 12px;
+            margin-bottom: 4px;
+            color: #666;
+        }
+
+        /* Sent messages (YOU) */
+        .sent {
+            align-self: flex-end;
+            margin-left: auto;
+        }
+
+        .sent .bubble {
+            background: #0a66c2;
+            color: #fff;
+            border-radius: 18px 18px 4px 18px;
+        }
+
+        /* Received messages */
+        .received {
+            align-self: flex-start;
+            margin-right: auto;
+        }
+
+        .received .bubble {
+            background: #e9ecef;
+            color: #000;
+            border-radius: 18px 18px 18px 4px;
+        }
+
+        /* Message bubble */
+        .bubble {
+            padding: 10px 14px;
+            font-size: 14px;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+
+        /* Input area */
+        .chat-form {
+            display: flex;
+            padding: 12px;
+            border-top: 1px solid #e0e0e0;
+            background: #fff;
+        }
+
+        .chat-form input {
+            flex: 1;
+            padding: 10px 14px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            outline: none;
+            font-size: 14px;
+        }
+        .chat-form textarea {
+    flex: 1;
+    padding: 10px 14px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 14px;
+    resize: none;
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+
+        .chat-form button {
+            margin-left: 10px;
+            padding: 0 18px;
+            border-radius: 20px;
+            border: none;
+            background: #0a66c2;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .chat-form button:hover {
+            background: #004182;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ===== NAVBAR ===== -->
+{% include 'partials/navbar.html' %}
+
+<div class="page-wrapper">
+
+    <div class="chat-container">
+
+        <!-- Header -->
+        <div class="chat-header">
+            {{ follower.username }}
+        </div>
+
+        <!-- Messages -->
+        <div class="chat-body" id="chatBody">
+            {% for msg in messages %}
+                <div class="message {% if msg.sender.id == request.session.user_id %}sent{% else %}received{% endif %}">
+
+                    {% if msg.sender.id != request.session.user_id %}
+                        <span class="sender-name">{{ msg.sender.username }}</span>
+                    {% endif %}
+
+                    <div class="bubble">
+                       {{ msg.text|linebreaksbr }}
+                    </div>
+
+                </div>
+            {% empty %}
+                <p style="text-align:center;color:#777;">No messages yet</p>
+            {% endfor %}
+        </div>
+
+        <!-- Input -->
+        <form method="post" action="{% url 'send_message' follower.id %}" class="chat-form">
+            {% csrf_token %}
+           <textarea name="message" rows="1" placeholder="Write a message..." required></textarea>
+
+            <button type="submit">Send</button>
+        </form>
+
+    </div>
+
+</div>
+
+<!-- Auto scroll to bottom -->
+<script>
+    const chatBody = document.getElementById("chatBody");
+    chatBody.scrollTop = chatBody.scrollHeight;
+     const textarea = document.querySelector(".chat-form textarea");
+
+<!--    textarea.addEventListener("keydown", function (e) {-->
+<!--        if (e.key === "Enter" && !e.shiftKey) {-->
+<!--            e.preventDefault();-->
+<!--            this.closest("form").submit();-->
+<!--        }-->
+<!--    });-->
+
+    const textarea = document.querySelector(".chat-form textarea");
+
+    textarea.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" && e.ctrlKey) {
+            e.preventDefault();
+            this.closest("form").submit();
+        }
+    });
+</script>
+
+</body>
+</html>

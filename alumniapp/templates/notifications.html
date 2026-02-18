@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notifications</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <style>
+        .container {
+            max-width: 700px;
+            margin: 90px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .notification {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .notification.unread {
+            background: #eef3f8;
+            font-weight: 600;
+        }
+
+        .notification small {
+            color: #888;
+            display: block;
+            margin-top: 4px;
+        }
+
+        .notification a {
+            text-decoration: none;
+            color: #0a66c2;
+        }
+
+        .empty {
+            text-align: center;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+{% if role %}
+    {% include 'partials/navbar.html' %}
+{% else %}
+    {% include 'partials/adminsidebar.html' %}
+{% endif %}
+
+<div class="container">
+    <h2>Notifications</h2>
+
+    {% for n in notifications %}
+    <div class="notification {% if not n.is_read %}unread{% endif %}">
+
+        <p>
+            <strong>{{ n.sender.username }}</strong> {{ n.message }}
+        </p>
+
+        <!-- ✅ FOLLOW BACK BUTTON -->
+        {% if n.notification_type == "follow" %}
+            <a href="{% url 'follow_back' n.sender.id request.session.user_id %}"
+               class="follow-back-btn">
+                Follow Back
+            </a>
+        {% endif %}
+
+        <!-- Normal link-based notification -->
+        {% if n.link %}
+            <a href="{{ n.link }}">View</a>
+        {% endif %}
+
+        <small>{{ n.created_at|timesince }} ago</small>
+    </div>
+
+{% empty %}
+    <p class="empty">No notifications yet</p>
+{% endfor %}
+
+</body>
+</html>

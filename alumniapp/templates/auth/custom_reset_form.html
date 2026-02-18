@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reset Password</title>
+
+    <!-- Bootstrap (if not already included globally) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f3f2ef;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .reset-wrapper {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .card {
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        h3 {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .form-label {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-control {
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .form-control:focus {
+            border-color: #0A66C2;
+            box-shadow: none;
+        }
+
+        .btn-primary {
+            background-color: #0A66C2;
+            border: none;
+            border-radius: 24px;
+            font-weight: 600;
+            padding: 12px;
+        }
+
+        .btn-primary:hover {
+            background-color: #004182;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="reset-wrapper">
+    <div class="card p-4">
+        <h3 class="text-center mb-4">Reset Your Password</h3>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label class="form-label">New Password</label>
+                <input
+                    type="password"
+                    name="password"
+                    class="form-control"
+                    placeholder="Enter new password"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 mt-3">
+                Reset Password
+            </button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

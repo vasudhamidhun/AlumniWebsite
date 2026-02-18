@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Messaging</title>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f3f2ef;
+        }
+
+        /* Space for fixed navbar */
+        .page-wrapper {
+            margin-top: 80px;
+        }
+
+        .messaging-container {
+            display: flex;
+            height: calc(100vh - 100px);
+            padding: 20px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 340px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Title */
+        .sidebar-title {
+            padding: 15px;
+            font-size: 18px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        /* Search */
+        .search-form {
+            padding: 10px 15px;
+        }
+
+        .search-form input {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+
+        /* User list */
+        .user-list {
+            overflow-y: auto;
+        }
+
+        /* User card */
+        .user-card {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            text-decoration: none;
+            color: #000;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.2s;
+        }
+
+        .user-card:hover {
+            background: #f3f6f8;
+        }
+
+        /* Avatar */
+        .avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #0a66c2;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+
+        /* Info */
+        .user-info strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .user-info .status {
+            font-size: 12px;
+            color: #777;
+        }
+
+        .empty {
+            padding: 15px;
+            color: #888;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+{% include 'partials/navbar.html' %}
+
+<div class="page-wrapper">
+
+    <div class="messaging-container">
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h3 class="sidebar-title">Messaging</h3>
+
+            <form method="get" class="search-form">
+                <input type="text" name="q" id="searchInput"
+                       placeholder="Search connections..." autocomplete="off">
+            </form>
+
+            <div class="user-list" id="userList">
+                {% for user in friends %}
+                    <a href="{% url 'chat' user.id %}" class="user-card">
+                        <div class="avatar">{{ user.username|first|upper }}</div>
+                        <div class="user-info">
+                            <strong>{{ user.username }}</strong>
+                            <span class="status">Connected</span>
+                        </div>
+                    </a>
+                {% empty %}
+                    <p class="empty">No connections found</p>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+const searchInput = document.getElementById('searchInput');
+const userList = document.getElementById('userList');
+
+searchInput.addEventListener('input', function () {
+    const query = this.value.trim();
+
+    fetch(`/ajax-search-friends/?q=${query}`)
+        .then(response => response.json())
+        .then(data => {
+            userList.innerHTML = '';
+
+            if (data.results.length === 0) {
+                userList.innerHTML = '<p class="empty">No connections found</p>';
+            } else {
+                data.results.forEach(user => {
+                    const userCard = document.createElement('a');
+                    userCard.href = `/chat/${user.id}/`;
+                    userCard.className = 'user-card';
+                    userCard.innerHTML = `
+                        <div class="avatar">${user.username.charAt(0).toUpperCase()}</div>
+                        <div class="user-info">
+                            <strong>${user.username}</strong>
+                            <span class="status">Connected</span>
+                        </div>
+                    `;
+                    userList.appendChild(userCard);
+                });
+            }
+        });
+});
+</script>
+
+</body>
+</html>

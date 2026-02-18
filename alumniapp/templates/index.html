@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Alumni Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            /* default thin font for body */
+            font-weight: 300;
+            /* thin */
+        }
+
+        /* TOP BAR */
+        .top-bar {
+            width: 100%;
+            background-color: #0056b3;
+            /* Blue */
+            color: white;
+            padding: 5px 10px;
+            /* reduced horizontal padding */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 300;
+            /* thin font */
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .top-bar .left span {
+            margin-right: 10px;
+            /* reduced spacing */
+        }
+
+        .top-bar .right img {
+            height: 20px;
+            width: 20px;
+            margin-left: 8px;
+            /* reduced spacing */
+            cursor: pointer;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            width: 100%;
+            background-color: white;
+            padding: 10px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            position: fixed;
+            top: 30px;
+            /* height of top-bar */
+            left: 0;
+            z-index: 999;
+        }
+        .navbar ul li a {
+    text-decoration: none;
+    color: #0056b3;
+    font-weight: 300;
+    font-size: 18px;
+    padding: 5px 10px;
+    transition: color 0.3s;
+}
+
+.navbar ul li a:hover {
+    color: #ff6600;
+}
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 90%;
+            /* tighter width */
+            padding: 0 10px;
+            font-family: 'Helvetica', sans-serif;
+            /* thin font for navbar */
+            font-weight: 300;
+            /* thin font */
+        }
+
+        .navbar ul li {
+            color: #0056b3;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        /* Logo in navbar */
+        .navbar ul li.logo {
+            flex: 0 0 auto;
+            margin: 0 20px;
+            /* reduced side margin */
+        }
+
+        .navbar ul li.logo img {
+            height: 60px;
+            width: auto;
+        }
+        /* Dropdown container */
+        /* Dropdown parent */
+.navbar ul li.dropdown {
+    position: relative;
+}
+
+/* Dropdown menu (hidden by default) */
+.navbar ul li.dropdown > .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ffffff;
+    min-width: 200px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
+    padding: 8px 0;
+    z-index: 2000;
+}
+
+/* Dropdown items */
+.dropdown-menu li {
+    list-style: none;
+    text-align: left;
+}
+
+/* Dropdown links */
+.dropdown-menu li a {
+    display: block;
+    padding: 12px 18px;
+    font-size: 15px;
+    color: #0056b3;
+    font-weight: 300;
+    text-decoration: none;
+    transition: background 0.3s, color 0.3s;
+}
+
+/* Hover effect */
+.dropdown-menu li a:hover {
+    background-color: #f5f5f5;
+    color: #ff6600;
+}
+
+/* Show dropdown on hover */
+.navbar ul li.dropdown:hover > .dropdown-menu {
+    display: block;
+}
+
+
+
+        /* HOME BACKGROUND */
+        .home {
+            background-image: url("https://st2.depositphotos.com/1003697/8076/i/450/depositphotos_80763240-stock-photo-high-school-graduates-tossing-up.jpg");
+            height: 100vh;
+            width: 100%;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+
+            /* Center content */
+            display: flex;
+            flex-direction: column;
+            /* stack h1 and p vertically */
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+
+            /* Optional overlay for better readability */
+            position: relative;
+        }
+
+        .home h1 {
+            color: white;
+            font-size: 48px;
+            font-weight: 300;
+            /* thin font */
+            padding: 10px 20px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+            /* readability over image */
+            max-width: 90%;
+            margin-bottom: 20px;
+            /* space below heading */
+        }
+
+        .home p {
+            color: #f0f0f0;
+            /* light gray for contrast */
+            font-size: 20px;
+            font-weight: 300;
+            /* thin font to match heading */
+            max-width: 700px;
+            /* limit line width for readability */
+            line-height: 1.6;
+            /* spacing between lines */
+            padding: 0 15px;
+            text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.5);
+            /* subtle shadow for readability */
+        }
+
+        /* Hover effect for navbar items */
+        .navbar ul li:hover {
+            color: #ff6600;
+            transition: 0.3s;
+        }
+
+
+        /* service style */
+        .services {
+    padding: 80px 20px;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.services h1 {
+    font-size: 36px;
+    font-weight: 300; /* thin heading */
+    color: #0056b3;
+    margin-bottom: 50px;
+}
+
+.services-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap; /* responsive wrap */
+    gap: 30px;
+}
+
+.service-box {
+    background-color: white;
+    padding: 20px;
+    width: 250px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.service-box img {
+    height: 80px;
+    margin-bottom: 20px;
+}
+
+.service-box h2 {
+    font-size: 22px;
+    color: #0056b3;
+    margin-bottom: 15px;
+    font-weight: 300; /* thin */
+}
+
+.service-box p {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.5;
+}
+
+.service-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* about style */
+.about {
+    padding: 80px 20px;
+    background-color: #f9f9f9;
+}
+
+.about-container {
+    display: flex;
+    align-items: center; /* vertically center */
+    justify-content: center;
+    flex-wrap: nowrap; /* prevent stacking on desktop */
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.about-image {
+    flex: 1; /* take up 50% approx */
+}
+
+.about-image img {
+    width: 100%;
+    max-width: 500px; /* limit image size */
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.about-content {
+    flex: 1; /* take up remaining space */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.about-content h2 {
+    font-size: 36px;
+    color: #0056b3;
+    margin-bottom: 20px;
+    font-weight: 300;
+}
+
+.about-content p {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 15px;
+}
+
+/* RESPONSIVE: stack image above content on smaller screens */
+@media (max-width: 768px) {
+    .about-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .about-content h2 {
+        font-size: 28px;
+    }
+}
+
+.quote {
+    background-color: #0056b3; /* blue background */
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+    font-style: italic;
+    font-size: 20px;
+    font-weight: 300; /* thin */
+}
+
+/* CONTACT SECTION */
+.contact {
+    padding: 60px 20px;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.contact h2 {
+    font-size: 32px;
+    color: #0056b3;
+    margin-bottom: 20px;
+    font-weight: 300; /* thin */
+}
+
+.contact p {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+/* FOOTER */
+footer {
+    background-color: #222;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 14px;
+}
+/* GALLERY SECTION */
+.gallery {
+    padding: 60px 20px;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.gallery h2 {
+    font-size: 32px;
+    color: #0056b3;
+    font-weight: 300;
+    margin-bottom: 40px;
+}
+
+.gallery-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.gallery-container img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.gallery-container img:hover {
+    transform: scale(1.05);
+}
+
+/* QUICK LINKS SECTION */
+.quick-links {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 60px 20px;
+    gap: 20px;
+    background-color: #ffffff;
+}
+
+.column {
+    flex: 1;
+    min-width: 280px;
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.column h3 {
+    text-align: center;
+    color: #0056b3;
+    font-weight: 300;
+    margin-bottom: 15px;
+}
+
+.column-content {
+    flex: 1;
+    overflow-y: auto; /* scrollable content */
+    max-height: 300px;
+    padding-right: 5px;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.item img {
+    height: 80px;
+    width: 80px;
+    margin-bottom: 10px;
+}
+
+.item h4 {
+    font-size: 18px;
+    color: #0056b3;
+    margin-bottom: 8px;
+    font-weight: 300;
+}
+
+.item p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+}
+
+.column button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    border: none;
+    background-color: #0056b3;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 300;
+    transition: 0.3s;
+}
+
+.column button:hover {
+    background-color: #003f7f;
+}
+
+/* Scrollbar styling */
+.column-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.column-content::-webkit-scrollbar-thumb {
+    background-color: #0056b3;
+    border-radius: 3px;
+}
+    </style>
+</head>
+
+<body>
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="left">
+            <span>📧 alumni@example.com</span>
+
+        </div>
+
+    </div>
+
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <ul>
+            <li><a href="#about">ABOUT US</a></li>
+            <li><a href="#programs">PROGRAMS & EVENTS</a></li>
+
+            <!-- LOGO IN CENTER -->
+            <li class="logo">
+                <img src="/media/logo/WhatsApp Image 2026-01-14 at 10.34.07 AM.jpeg" alt="Linked Alumni">
+            </li>
+
+            <li><a href="#gallery">ALUMNI STORIES</a></li>
+           <li class="dropdown">
+    <a href="#" class="login-link">LOGIN ▾</a>
+
+    <ul class="dropdown-menu">
+        <li><a href="/adminlogin/">Admin Login</a></li>
+        <li><a href="/login/staff/">Teacher Login</a></li>
+        <li><a href="/login/student/">Student Login</a></li>
+        <li><a href="/login/alumni/">Alumni Login</a></li>
+    </ul>
+</li>
+        </ul>
+    </div>
+
+    <!-- HOME SECTION -->
+    <div class="home">
+        <h1>Connecting To Past ,Empowering The Future.</h1>
+        <p>Honoiring our shared journey whle inspiring growth,collboration, and lifelong connection</p>
+    </div>
+
+    <div class="services">
+    <h1>Services</h1>
+    <div class="services-container">
+        <!-- Service 1 -->
+        <div class="service-box">
+            <img src="https://img.icons8.com/color/96/000000/membership-card.png" alt="Membership">
+            <h2>Membership</h2>
+            <p>Join our alumni network and stay connected with peers and the institution.</p>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="service-box">
+            <img src="https://img.icons8.com/color/96/000000/news.png" alt="News and Events">
+            <h2>News & Events</h2>
+            <p>Stay updated with the latest news, events, and achievements of our alumni.</p>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="service-box">
+            <img src="https://img.icons8.com/color/96/000000/meeting.png" alt="Alumni Meets">
+            <h2>Alumni Meets</h2>
+            <p>Participate in reunions and meetups to strengthen your network and relationships.</p>
+        </div>
+
+        <!-- Service 4 -->
+        <div class="service-box">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRc4YhhepVTcEyhrned-Y2gMlUSOwq5YRIf3g&s"alt="Community">
+            <h2>Community</h2>
+            <p>Engage with the alumni community to collaborate and share experiences.</p>
+        </div>
+    </div>
+</div>
+<div class="about" id="about">
+    <div class="about-container">
+        <!-- Left side: image -->
+        <div class="about-image">
+            <img src="https://media.istockphoto.com/id/1598339857/photo/happy-asian-woman-in-his-graduation-day.jpg?s=612x612&w=0&k=20&c=zrKkuVyoYFAQvP4fBSbNzFoarb3XarIrBBYzG3QtPcw=" alt="About Us">
+        </div>
+
+        <!-- Right side: heading and paragraphs -->
+        <div class="about-content">
+            <h2>About Us</h2>
+            <p>Our alumni network connects past students with current students, fostering mentorship and growth.</p>
+            <p>We aim to celebrate achievements, organize events, and strengthen the community through collaboration and lifelong connections.</p>
+            <p>Join us in creating meaningful experiences that empower the future while honoring the past.</p>
+        </div>
+    </div>
+</div>
+<div class="quote">
+    <p>"Alumni are the bridge between the past and the future, creating connections that empower generations."</p>
+</div>
+
+<!-- GALLERY SECTION -->
+<div class="gallery" id="gallery">
+    <h2>Alumni Gallery</h2>
+    <div class="gallery-container">
+        <img src="https://img.icons8.com/color/200/000000/graduation.png" alt="Gallery Image">
+        <img src="https://img.icons8.com/color/200/000000/graduation-hat.png" alt="Gallery Image">
+        <img src="https://img.icons8.com/color/200/000000/student-male.png" alt="Gallery Image">
+        <img src="https://img.icons8.com/color/200/000000/student-female.png" alt="Gallery Image">
+    </div>
+</div>
+
+<!-- THREE COLUMN QUICK LINKS -->
+<div class="quick-links" id="programs">
+    <div class="column">
+        <h3>News</h3>
+        <div class="column-content">
+            <div class="item">
+                <img src="https://img.icons8.com/color/96/000000/news.png" alt="News">
+                <h4>Alumni Award</h4>
+                <p>Celebrating alumni achievements in various fields across the globe.</p>
+            </div>
+            <div class="item">
+                <img src="https://img.icons8.com/color/96/000000/news.png" alt="News">
+                <h4>College Updates</h4>
+                <p>Latest happenings, notices, and news from our institution.</p>
+            </div>
+            <button>View All News</button>
+        </div>
+    </div>
+
+    <div class="column">
+        <h3>Events</h3>
+        <div class="column-content">
+            <div class="item">
+                <img src="https://img.icons8.com/color/96/000000/meeting.png" alt="Event">
+                <h4>Alumni Meet</h4>
+                <p>Reconnect with fellow alumni at our annual gatherings.</p>
+            </div>
+            <div class="item">
+                <img src="https://img.icons8.com/color/96/000000/meeting.png" alt="Event">
+                <h4>Workshops</h4>
+                <p>Participate in skill-building workshops organized by alumni.</p>
+            </div>
+            <button>View All Events</button>
+        </div>
+    </div>
+
+    <div class="column">
+        <h3>Career Opportunities</h3>
+        <div class="column-content">
+            <div class="item">
+                <img src="https://img.icons8.com/color/96/000000/job.png" alt="Career">
+                <h4>Job Openings</h4>
+                <p>Check latest career opportunities shared by alumni and partners.</p>
+            </div>
+            <div class="item">
+                <img src="https://img.icons8.com/color/96/000000/job.png" alt="Career">
+                <h4>Internships</h4>
+                <p>Find internships and mentorship programs from alumni network.</p>
+            </div>
+            <button>View Opportunities</button>
+        </div>
+    </div>
+</div>
+
+<!-- CONTACT SECTION -->
+<div class="contact">
+    <h2>Contact Us</h2>
+    <p>Email: alumni@example.com</p>
+    <p>Phone: +91-9876543210</p>
+    <p>Address: 123 College Road, City, Country</p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <p>&copy; 2025 Alumni Portal. All rights reserved.</p>
+</footer>
+
+</body>
+
+</html>

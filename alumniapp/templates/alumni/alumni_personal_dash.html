@@ -1,0 +1,250 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <style>
+        body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+.profile-container {
+    max-width: 900px;
+    margin: 50px auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 30px;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 20px;
+}
+
+.profile-photo img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #0073b1; /* LinkedIn style accent */
+    margin-right: 30px;
+}
+
+.profile-info h2 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.username {
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.bio {
+    font-style: italic;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.profile-stats {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 15px;
+}
+
+.profile-stats div {
+    text-align: center;
+}
+
+.profile-stats div strong {
+    font-size: 18px;
+    display: block;
+}
+
+.profile-details p {
+    margin: 3px 0;
+    color: #555;
+}
+
+.profile-actions {
+    margin-top: 20px;
+}
+
+.btn {
+    background-color: #0073b1;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-right: 10px;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.btn:hover {
+    background-color: #005f87;
+}
+
+.btn-secondary {
+    background-color: #aaa;
+}
+
+.btn-secondary:hover {
+    background-color: #888;
+}
+
+.no-profile {
+    text-align: center;
+    padding: 50px 0;
+}
+
+.no-profile p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+        .posts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.post-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding: 15px;
+}
+
+.post-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.comments-section {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+}
+
+
+    </style>
+    <meta charset="UTF-8">
+    <title>{{ user.username }} - Alumni Profile</title>
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+</head>
+<body>
+<div class="profile-container">
+    {% if has_profile %}
+    <div class="profile-header">
+        <div class="profile-photo">
+            {% if profile.profile_photo %}
+                <img src="{{ profile.profile_photo.url }}" alt="Profile Photo">
+            {% else %}
+                       <img src="data:image/png;base64,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" alt="Default Profile Image">
+    
+            {% endif %}
+        </div>
+        <div class="profile-info">
+            <h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
+            <p class="username">@{{ user.username }}</p>
+            <p class="bio">{{ profile.bio }}</p>
+
+            <div class="profile-stats">
+                <div>
+                    <strong>{{ profile.followers.count }}</strong>
+                    <span>Followers</span>
+                </div>
+                <div>
+                    <strong>{{ profile.following.count }}</strong>
+                    <span>Following</span>
+                </div>
+                <div>
+                    <strong>{{ profile.batch_year }}</strong>
+                    <span>Batch</span>
+                </div>
+            </div>
+
+            <div class="profile-details">
+                {% if profile.current_company %}
+                    <p>💼 {{ profile.current_designation }} at {{ profile.current_company }}</p>
+                {% endif %}
+                {% if profile.location %}
+                    <p>📍 {{ profile.location }}</p>
+                {% endif %}
+                {% if profile.skills %}
+                    <p>🛠 Skills: {{ profile.skills }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="profile-actions">
+        <a href="{% url 'update_profile' %}" class="btn">Edit Profile</a>
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+       {% if role == "alumni" or role == "staff" %}
+
+        <a href="/post/add/" class="btn btn-primary">Post</a>
+        {% endif %}
+         <a href="{% url 'bookmarked_posts' %}" class="btn btn-primary"> 🔖 Saved</a>
+    </div>
+
+    {% else %}
+        <div class="no-profile">
+            <p>You have not created your profile yet.</p>
+            <a href="{% url 'create_profile'  %}" class="btn btn-primary">Create Profile</a>
+        </div>
+    {% endif %}
+
+
+
+
+
+    {% if has_profile %}
+<hr style="margin: 30px 0;">
+<h2>Your Posts</h2>
+
+{% if posts %}
+    <div class="posts-container">
+        {% for post in posts %}
+            <div class="post-card">
+                {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="Post Image" class="post-image">
+                {% endif %}
+                {% if post.caption %}
+                    <p>{{ post.caption }}</p>
+                {% endif %}
+                <p style="font-size: 12px; color: #555;">Posted at: {{ post.created_at|date:"d M Y H:i" }}</p>
+                <a href="{% url 'delete_post' post.id %}" class="btn">Delete Post</a>
+                <p>
+                    Likes: {{ post.like_count }}
+                    {% if post.is_liked %} (You liked this) {% endif %}
+                </p>
+                <div class="comments-section">
+                    <strong>Comments:</strong>
+                    {% if post.comments_list %}
+                        <ul>
+                            {% for comment in post.comments_list %}
+                                <li><strong>{{ comment.user.username }}:</strong> {{ comment.comment }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No comments yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>You have not posted anything yet.</p>
+{% endif %}
+{% endif %}
+</div>
+</body>
+</html>

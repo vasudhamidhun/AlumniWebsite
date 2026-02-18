@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Alumni Profile</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<style>
+body{
+    margin:0;
+    background:#f3f2ef;
+    font-family:Segoe UI, Roboto, Arial, sans-serif;
+    color:#1c1c1c;
+}
+
+/* ================= CONTAINER ================= */
+.profile-container{
+    max-width:1000px;
+    margin:20px auto;
+    display:grid;
+    grid-template-columns:300px 1fr;
+    gap:20px;
+    padding:10px;
+}
+
+/* ================= LEFT PROFILE CARD ================= */
+.profile-card{
+    background:#fff;
+    border-radius:10px;
+    padding:20px;
+    text-align:center;
+    box-shadow:0 1px 4px rgba(0,0,0,0.15);
+}
+
+.profile-card img{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    object-fit:cover;
+    margin-bottom:10px;
+}
+
+.profile-card h2{
+    margin:8px 0 4px;
+    font-size:20px;
+}
+
+.profile-card h4{
+    font-weight:500;
+    font-size:14px;
+    color:#555;
+    margin-bottom:6px;
+}
+
+.profile-card p{
+    font-size:13px;
+    color:#666;
+    margin:4px 0;
+}
+
+.follow-btn{
+    margin-top:15px;
+    display:inline-block;
+    padding:8px 22px;
+    border-radius:20px;
+    background:#0a66c2;
+    color:white;
+    text-decoration:none;
+    font-size:14px;
+}
+
+.follow-btn.disabled{
+    background:#ccc;
+    cursor:not-allowed;
+}
+
+/* ================= RIGHT CONTENT ================= */
+.profile-content{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+/* ================= ABOUT SECTION ================= */
+.about-card{
+    background:#fff;
+    padding:15px 20px;
+    border-radius:10px;
+    box-shadow:0 1px 4px rgba(0,0,0,0.15);
+}
+
+.about-card h3{
+    margin-bottom:10px;
+    font-size:16px;
+}
+
+.about-card p{
+    font-size:14px;
+    line-height:1.5;
+    color:#444;
+}
+
+/* ================= POSTS ================= */
+.post-card{
+    background:#fff;
+    border-radius:10px;
+    padding:15px;
+    box-shadow:0 1px 4px rgba(0,0,0,0.15);
+}
+
+.post-card img{
+    width:100%;
+    border-radius:8px;
+    margin-top:10px;
+    max-height:400px;
+    object-fit:cover;
+}
+
+.post-card small{
+    display:block;
+    margin-top:6px;
+    color:#777;
+}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:900px){
+    .profile-container{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="profile-container">
+
+    <!-- ================= LEFT PROFILE ================= -->
+    <div class="profile-card">
+
+        {% if profile.profile_photo %}
+            <img src="{{ profile.profile_photo.url }}">
+        {% else %}
+            <img src="/static/default.png">
+        {% endif %}
+
+        <h2>{{ profile.user.username }}</h2>
+        <h4>{{ profile.current_designation }} @ {{ profile.current_company }}</h4>
+
+        <p>🎓 Batch {{ profile.batch_year }}</p>
+        <p>📍 {{ profile.location }}</p>
+
+        {% if is_following %}
+            <span class="follow-btn disabled">Following ✓</span>
+        {% else %}
+            <a href="{% url 'follow_user' profile.user.id %}" class="follow-btn">
+                Follow
+            </a>
+        {% endif %}
+    </div>
+
+    <!-- ================= RIGHT CONTENT ================= -->
+    <div class="profile-content">
+
+        <!-- ABOUT -->
+        <div class="about-card">
+            <h3>About</h3>
+            <p>
+                {{ profile.bio|default:"This alumni has not added a bio yet." }}
+            </p>
+        </div>
+
+        <!-- POSTS -->
+        <h3 style="margin-left:5px;">Posts</h3>
+
+        {% for post in posts %}
+        <div class="post-card">
+            <p>{{ post.caption }}</p>
+
+            {% if post.image %}
+                <img src="{{ post.image.url }}">
+            {% endif %}
+
+            <small>{{ post.created_at|date:"M d, Y" }}</small>
+        </div>
+        {% empty %}
+            <p>No posts yet.</p>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

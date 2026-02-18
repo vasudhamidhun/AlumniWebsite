@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registration Form</title>
+<style>
+  /* Basic Reset */
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  .form-heading {
+    font-size: 28px;
+    font-weight: 600;
+    background: linear-gradient(90deg, #0056b3, #ff6600);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+}
+
+  body {
+    background: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  /* Form Container */
+  .registration-form {
+    background: #fff;
+    padding: 40px 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    width: 350px;
+  }
+
+  .registration-form h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+  }
+
+  /* Input Styles */
+  .registration-form .input-group {
+    position: relative;
+    margin-bottom: 25px;
+  }
+
+  .registration-form input {
+    width: 100%;
+    padding: 10px 5px;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    outline: none;
+    font-size: 16px;
+    transition: border-color 0.3s;
+    background: transparent;
+  }
+
+  .registration-form input:focus {
+    border-bottom-color: #007bff;
+  }
+
+  .registration-form label {
+    position: absolute;
+    top: 10px;
+    left: 5px;
+    color: #aaa;
+    pointer-events: none;
+    transition: 0.3s;
+  }
+  .registration-form {
+    background: #fff;
+    padding: 40px 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    width: 400px;
+    margin: 50px auto;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+}
+
+  .registration-form input:focus + label,
+  .registration-form input:not(:placeholder-shown) + label {
+    top: -15px;
+    font-size: 12px;
+    color: #007bff;
+  }
+
+  /* Submit Button */
+  .registration-form button {
+    width: 100%;
+    padding: 12px;
+    background: #007bff;
+    border: none;
+    border-radius: 25px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .registration-form button:hover {
+    background: #0056b3;
+  }
+
+  /* Small text for extra styling */
+  .registration-form p {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #666;
+  }
+  .signin-text {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #555;
+    text-align: center;
+}
+
+.signin-text a {
+    color: #ff6600;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.signin-text a:hover {
+    text-decoration: underline;
+    color: #ff6600;
+}
+
+        .messages {
+            margin-bottom: 15px;
+            color: green;
+            text-align: center;
+        }
+
+        .errorlist {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+
+</style>
+</head>
+<body>
+
+  <form class="registration-form" method="post">
+    {% csrf_token %}
+
+    <h2 class="form-heading">Student Sign-Up</h2>
+
+    <!-- NON-FIELD ERRORS (password mismatch etc.) -->
+    {% if form.non_field_errors %}
+        <div class="errorlist">
+            {{ form.non_field_errors }}
+        </div>
+    {% endif %}
+
+    <!-- Username -->
+    <div class="input-group">
+        {{ form.username }}
+        <label>Username</label>
+        {{ form.username.errors }}
+    </div>
+
+    <!-- College ID -->
+    <div class="input-group">
+        {{ form.college_id }}
+        <label>College ID</label>
+        {{ form.college_id.errors }}
+    </div>
+
+    <!-- Email -->
+    <div class="input-group">
+        {{ form.email }}
+        <label>Email</label>
+        {{ form.email.errors }}
+    </div>
+
+    <!-- Password -->
+    <div class="input-group">
+        {{ form.password }}
+        <label>Password</label>
+        {{ form.password.errors }}
+    </div>
+
+    <!-- Confirm Password -->
+    <div class="input-group">
+        {{ form.confirm_password }}
+        <label>Confirm Password</label>
+        {{ form.confirm_password.errors }}
+    </div>
+
+    <!-- Messages (student/alumni logic errors) -->
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <button type="submit">Register</button>
+
+    <p class="signin-text">
+        Already have an account?
+        <a href="{% url 'student_login' %}">Login here</a>
+    </p>
+</form>
+
+
+</body>
+</html>

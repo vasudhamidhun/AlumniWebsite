@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Events</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+        :root {
+            --navbar-height: 70px;
+            --primary: #0A66C2;
+            --border: #e0e0e0;
+            --text-dark: #1A2A5E;
+            --text-muted: #6b7280;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: #f3f2ef; /* LinkedIn background */
+            font-family: Arial, sans-serif;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            margin-left: 260px;
+            padding-top: calc(var(--navbar-height) + 20px);
+            padding-bottom: 40px;
+        }
+
+        /* ===== PAGE HEADER ===== */
+        .page-header {
+            max-width: 600px;
+            margin: 0 auto 20px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-header h1 {
+            font-size: 22px;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        .event-btn {
+            padding: 8px 16px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .event-btn:hover {
+            background: #004182;
+        }
+
+        /* ===== FEED ===== */
+        .event-feed {
+            max-width: 600px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* ===== EVENT CARD ===== */
+        .event-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .event-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+
+        .event-datetime {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .event-description {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        /* ===== FILE LINK ===== */
+        .event-file {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .event-file:hover {
+            background: #f3f6f8;
+        }
+
+        /* ===== EMPTY ===== */
+        .empty {
+            text-align: center;
+            color: var(--text-muted);
+            margin-top: 40px;
+        }
+
+        /* ===== MOBILE ===== */
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+                padding: 80px 10px 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+{% load static %}
+
+<!-- ===== NAVBAR / SIDEBAR ===== -->
+{% if role %}
+    {% include 'partials/navbar.html' %}
+{% else %}
+    {% include 'partials/adminsidebar.html' %}
+{% endif %}
+
+<div class="main-content">
+
+    <!-- ===== HEADER ===== -->
+    <div class="page-header">
+        <h1>Events</h1>
+
+        {% if role in "staff,alumni" %}
+            <a href="{% url 'add_event' %}" class="event-btn">
+                + Add Event
+            </a>
+        {% endif %}
+    </div>
+
+    <!-- ===== FEED ===== -->
+    <div class="event-feed">
+
+        {% for event in events %}
+            <div class="event-card">
+
+                <div class="event-title">
+                    {{ event.name }}
+                </div>
+
+                <div class="event-datetime">
+                    {{ event.event_datetime|date:"d M Y • H:i" }}
+                </div>
+
+                <div class="event-description">
+                    {{ event.description }}
+                </div>
+
+                {% if event.file %}
+                    <a href="{{ event.file.url }}" class="event-file" download>
+                        <span class="material-icons" style="font-size:16px;">attach_file</span>
+                        {{ event.file.name|slice:"12:" }}
+                    </a>
+                {% endif %}
+
+            </div>
+        {% empty %}
+            <p class="empty">No events found.</p>
+        {% endfor %}
+
+    </div>
+</div>
+
+</body>
+</html>

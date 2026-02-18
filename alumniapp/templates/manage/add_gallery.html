@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Gallery Image</title>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f6fa;
+        }
+
+        /* ================= LAYOUT HANDLING ================= */
+
+        /* Admin layout */
+        .admin-layout .main-content {
+            margin-left: 260px; /* sidebar width */
+            padding: 40px 50px;
+        }
+
+        /* User layout (navbar space reserved) */
+        .user-layout .main-content {
+            margin-left: 0;
+            padding: 100px 50px 40px; /* navbar height space */
+        }
+
+        /* Prevent page styles affecting navbar */
+        nav input,
+        nav textarea,
+        nav button {
+            all: revert;
+        }
+
+        /* ================= PAGE CONTENT ================= */
+
+        .main-content {
+            min-height: 100vh;
+        }
+
+        /* Header row */
+        .content-header {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 25px;
+        }
+
+        .view-btn {
+            padding: 10px 22px;
+            background: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .view-btn:hover {
+            background: #45a049;
+        }
+
+        /* Form center */
+        .form-wrapper {
+            display: flex;
+            justify-content: center;
+        }
+
+        form {
+            background: #ffffff;
+            width: 500px;
+            padding: 25px 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #1A2A5E;
+        }
+
+        form p {
+            margin-bottom: 18px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 6px;
+            color: #333;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        /* Messages */
+        .messages {
+            background: #e6ffe6;
+            border-left: 5px solid #28a745;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            color: #2d572c;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body class="{% if request.user.is_authenticated and request.user.is_superuser %}admin-layout{% else %}user-layout{% endif %}">
+
+<!-- ================= NAVBAR / SIDEBAR ================= -->
+{% if role %}
+    {% include 'partials/navbar.html' %}
+
+{% else %}
+   {% include 'partials/adminsidebar.html' %}
+{% endif %}
+
+<br><br>
+
+<!-- ================= MAIN CONTENT ================= -->
+<div class="main-content">
+
+    <!-- Top Right Button -->
+    <div class="content-header">
+        <a href="{% url 'gallery_list' %}" class="view-btn">
+            View Gallery
+        </a>
+    </div>
+
+    <!-- Centered Form -->
+    <div class="form-wrapper">
+        <form method="POST" enctype="multipart/form-data">
+            <h2>Add Gallery Image</h2>
+
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% csrf_token %}
+
+            <p>
+                {{ form.image.label_tag }}
+                {{ form.image }}
+            </p>
+
+            <p>
+                {{ form.description.label_tag }}
+                {{ form.description }}
+            </p>
+
+            <button type="submit">Upload Image</button>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

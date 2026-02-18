@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery</title>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f6fa;
+        }
+
+        /* MAIN CONTENT */
+        .main-content {
+            margin-left: 260px; /* sidebar width */
+            padding: 40px;
+        }
+
+        h2 {
+            color: #1A2A5E;
+            margin-bottom: 15px;
+        }
+
+        /* ADD BUTTON */
+        .gallery-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 22px;
+            background: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .gallery-btn:hover {
+            background: #45a049;
+        }
+
+        /* GALLERY GRID */
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-item .description {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0,0,0,0.65);
+            color: white;
+            padding: 10px;
+            font-size: 14px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover .description {
+            opacity: 1;
+        }
+
+        .empty-text {
+            color: #777;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ================= ADMIN SIDEBAR ================= -->
+{% if role %}
+    {% include 'partials/navbar.html' %}
+
+{% else %}
+   {% include 'partials/adminsidebar.html' %}
+{% endif %}
+
+
+<!-- ✅ MAIN CONTENT -->
+<div class="main-content">
+    <h2>Gallery</h2>
+{% if role in "staff,alumni" %}
+        <a href="{% url 'add_gallery' %}" class="gallery-btn">
+            ➕ Add Gallery
+        </a>
+    {% endif %}
+
+    <div class="gallery-container">
+        {% for img in images %}
+            <div class="gallery-item">
+                <img src="{{ img.image.url }}" alt="Gallery Image">
+                <div class="description">{{ img.description }}</div>
+            </div>
+        {% empty %}
+            <p class="empty-text">No images available.</p>
+        {% endfor %}
+    </div>
+</div>
+
+</body>
+</html>

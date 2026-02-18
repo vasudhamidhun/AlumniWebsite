@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{box-sizing:border-box;}
+
+body{
+    margin:0;
+    font-family:"Segoe UI", Roboto, Arial, sans-serif;
+    background:#f3f2ef;
+    overflow:hidden;
+}
+
+/* ================= HEADER ================= */
+.logo img{
+    height: 48px;              /* ⬅ Bigger logo */
+    width: 48px;               /* Keep it square for perfect round */
+    border-radius: 50%;        /* ⬅ Fully rounded */
+    object-fit: cover;         /* Prevent image distortion */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15); /* Subtle premium look */
+    background: #fff;
+}
+
+.header{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:64px;
+    background:#fff;
+    box-shadow:0 1px 4px rgba(0,0,0,.15);
+    z-index:1000;
+}
+
+.header-inner{
+    max-width:1100px;
+    margin:auto;
+    height:100%;
+    display:flex;
+    align-items:center;
+    padding:0 16px;
+}
+
+.header-left{
+    width:240px;
+    font-size:20px;
+    font-weight:600;
+    color:#0a66c2;
+}
+
+.header-center{
+    flex:1;
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.search-box input{
+    width:260px;
+    padding:8px 12px;
+    border-radius:6px;
+    border:1px solid #ccc;
+    background:#eef3f8;
+}
+
+.nav-icons{
+    display:flex;
+    gap:18px;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: #555;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 72px;          /* ✅ fixed width prevents shifting */
+    position: relative;  /* move relative here instead */
+}
+
+.nav-item span{font-size:26px;}
+.nav-item:hover{color:#0a66c2;}
+
+.header-right{
+    width:260px;
+    text-align:right;
+}
+        /* ================= NOTIFICATION ================= */
+.nav-item.notification {
+    position: static;
+}
+
+.nav-item.notification .material-icons {
+    font-size: 26px;
+}
+
+.notification-badge {
+    position: absolute;
+    top: 2px;
+    right: 14px;
+    background: #e0245e;        /* red */
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    min-width: 18px;
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 50%;
+    padding: 0 5px;
+    box-shadow: 0 0 0 2px #fff; /* white ring like LinkedIn */
+}
+
+
+    </style>
+</head>
+<body>
+<!-- ================= HEADER ================= -->
+<div class="header">
+  <div class="header-inner">
+    <div class="header-left logo">
+    <a href="{% url 'dashboard' %}">
+        <img src="/media/logo/WhatsApp Image 2026-01-14 at 10.34.07 AM.jpeg" alt="Linked Alumni">
+    </a>
+</div>
+
+    <div class="header-center">
+      <form method="GET" action="{% url 'alumni_search' %}" class="search-box">
+        <input type="text" name="q" placeholder="Search alumni, jobs">
+      </form>
+
+      <div class="nav-icons">
+        <a href="{% url 'dashboard' %}" class="nav-item">
+          <span class="material-icons">home</span>Home
+        </a>
+        <a href="{% url 'friends_list' %}" class="nav-item">
+          <span class="material-icons">group</span>Network
+        </a>
+        <a href="{% url 'jobs_from_following' %}" class="nav-item">
+          <span class="material-icons">work</span>Jobs
+        </a>
+         <a href="{% url 'messages_dashboard' %}" class="nav-item">
+                <span class="material-icons">mail</span>Messages
+            </a>
+         <a href="{% url 'notifications' %}" class="nav-item notification">
+    <span class="material-icons">notifications</span>
+    Notifications
+
+    {% if notification_count > 0 %}
+        <span class="notification-badge">{{ notification_count }}</span>
+    {% endif %}
+</a>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <a href="{% url 'user_dashboard' %}">
+        <span class="material-icons">account_circle</span>
+      </a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Fundraising</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f6fa;
+        }
+
+        /* ================= MAIN CONTENT ================= */
+        .main-content {
+            margin-left: 260px; /* sidebar width */
+            padding: 40px 50px;
+            min-height: 100vh;
+        }
+
+        /* Header row */
+        .content-header {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 25px;
+        }
+
+        .view-btn {
+            padding: 10px 22px;
+            background: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .view-btn:hover {
+            background: #45a049;
+        }
+
+        /* Center form */
+        .form-wrapper {
+            display: flex;
+            justify-content: center;
+        }
+
+        form {
+            background: #ffffff;
+            width: 520px;
+            padding: 25px 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #1A2A5E;
+        }
+
+        form p {
+            margin-bottom: 18px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 6px;
+            color: #333;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        /* Messages */
+        .messages {
+            background: #e6ffe6;
+            border-left: 5px solid #28a745;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            color: #2d572c;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ================= ADMIN SIDEBAR ================= -->
+{% if role %}
+    {% include 'partials/navbar.html' %}
+
+{% else %}
+   {% include 'partials/adminsidebar.html' %}
+{% endif %}
+
+<div class="main-content">
+    <h2>Create Fundraising Campaign</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+</body>
+</html>

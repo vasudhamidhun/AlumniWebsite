@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Event</title>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+        :root {
+    --navbar-height: 70px;
+}
+
+/* ===== GLOBAL SCROLL FIX ===== */
+html, body {
+    min-height: 100%;
+    height: auto;
+    margin: 0;
+    overflow-y: auto;
+    font-family: Arial, sans-serif;
+    background: #f5f6fa;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-content {
+    margin-left: 260px;
+    padding: 40px;
+    padding-top: calc(var(--navbar-height) + 20px);
+    overflow: visible;
+}
+
+/* ===== BUTTON ===== */
+.add-event-btn {
+    display: inline-block;
+    margin-bottom: 25px;
+    padding: 10px 22px;
+    background: #4CAF50;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+/* ===== FORM ===== */
+.event-form {
+    background: #ffffff;
+    max-width: 520px;
+    margin: 0 auto 80px auto; /* extra bottom space for scroll */
+    padding: 25px 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.event-form p {
+    margin-bottom: 18px;
+}
+
+.event-form label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.event-form input,
+.event-form textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.event-form button {
+    width: 100%;
+    padding: 12px;
+    background: #007bff;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+        padding-top: calc(var(--navbar-height) + 10px);
+    }
+}
+
+    </style>
+</head>
+
+<body>
+
+{% if role %}
+    {% include 'partials/navbar.html' %}
+{% else %}
+    {% include 'partials/adminsidebar.html' %}
+{% endif %}
+
+<div class="main-content">
+
+    <a href="{% url 'view_all_events' %}" class="add-event-btn">
+        View Event
+    </a>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" class="event-form">
+        {% csrf_token %}
+
+        <p>
+            {{ form.name.label_tag }}
+            {{ form.name }}
+        </p>
+
+        <p>
+            {{ form.description.label_tag }}
+            {{ form.description }}
+        </p>
+
+        <p>
+            {{ form.event_datetime.label_tag }}
+            {{ form.event_datetime }}
+        </p>
+
+        <p>
+            {{ form.file.label_tag }}
+            {{ form.file }}
+        </p>
+
+        <button type="submit">Add Event</button>
+    </form>
+
+</div>
+
+</body>
+</html>

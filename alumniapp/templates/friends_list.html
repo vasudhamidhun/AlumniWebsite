@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- ✅ REQUIRED FOR NAVBAR ICONS -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+<body>
+
+{% load static %}
+<!-- ===== NAVBAR ===== -->
+{% if role %}
+    {% include 'partials/navbar.html' %}
+
+{% else %}
+   {% include 'partials/adminsidebar.html' %}
+{% endif %}
+
+{% block content %}
+<br>
+<br>
+<div class="container">
+    <h2>My Friends</h2>
+
+    {% if friends %}
+        <div class="friends-grid">
+            {% for friend in friends %}
+                <div class="friend-card">
+
+                    {% if friend.alumniprofile.profile_photo %}
+                        <img src="{{ friend.alumniprofile.profile_photo.url }}" alt="{{ friend.username }}">
+                    {% else %}
+                        <img src="{% static 'default.png' %}" alt="Default Profile">
+                    {% endif %}
+
+                    <h4>{{ friend.username }}</h4>
+                    <p>College ID: {{ friend.college_id }}</p>
+
+                    <a href="{% url 'user_profile' friend.id %}" class="btn view-btn">
+                        View Profile
+                    </a>
+
+                    <a href="{% url 'unfollow' friend.id %}" class="btn unfollow-btn">
+                        Unfollow
+                    </a>
+
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You have no friends yet. Follow alumni to connect!</p>
+    {% endif %}
+</div>
+
+<style>
+.container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.friends-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.friend-card {
+    width: 200px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    text-align: center;
+    background-color: #f9f9f9;
+    box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
+}
+
+.friend-card img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.friend-card h4 {
+    margin: 5px 0;
+    font-size: 18px;
+}
+
+.friend-card p {
+    margin: 5px 0 10px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.friend-card .btn {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: #1A2A5E;
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.friend-card .btn:hover {
+    background-color: #0f1a3a;
+}
+</style>
+{% endblock %}
+
+</body>
+</html>

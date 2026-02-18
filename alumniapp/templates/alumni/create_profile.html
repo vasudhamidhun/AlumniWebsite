@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <style>
+        .profile-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-form h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+
+.profile-form label {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.profile-form input[type="text"],
+.profile-form input[type="number"],
+.profile-form input[type="file"],
+.profile-form textarea {
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.profile-form textarea {
+    resize: vertical;
+    height: 80px;
+}
+
+.form-actions {
+    margin-top: 20px;
+}
+
+    </style>
+    <meta charset="UTF-8">
+    <title>Create Alumni Profile</title>
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+</head>
+<body>
+<div class="profile-container">
+    <h1>Create Your Profile</h1>
+
+    <form method="POST" enctype="multipart/form-data" class="profile-form">
+        {% csrf_token %}
+        
+        <!-- Personal Info -->
+        <h3>Personal Information</h3>
+        <label for="id_first_name">First Name</label>
+        {{ form.first_name }}
+        
+        <label for="id_last_name">Last Name</label>
+        {{ form.last_name }}
+        
+        <label for="id_profile_photo">Profile Photo</label>
+        {{ form.profile_photo }}
+        
+        <label for="id_bio">Bio</label>
+        {{ form.bio }}
+
+        <!-- Academic Info -->
+        <h3>Academic Information</h3>
+        <label for="id_degree">Degree</label>
+        {{ form.degree }}
+        
+        <label for="id_branch">Branch / Major</label>
+        {{ form.branch }}
+        
+        <label for="id_batch_year">Batch Year</label>
+        {{ form.batch_year }}
+
+        <!-- Professional Info -->
+        <h3>Professional Information</h3>
+        <label for="id_current_company">Current Company</label>
+        {{ form.current_company }}
+        
+        <label for="id_current_designation">Designation</label>
+        {{ form.current_designation }}
+        
+        <label for="id_location">Location</label>
+        {{ form.location }}
+        
+        <label for="id_skills">Skills (comma separated)</label>
+        {{ form.skills }}
+
+        <div class="form-actions">
+            <button type="submit" class="btn">Save Profile</button>
+            <a href="{% url 'user_dashboard' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

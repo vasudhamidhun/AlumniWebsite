@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reset Password</title>
+
+    <style>
+        :root {
+            --primary: #0A66C2;
+            --border: #e0e0e0;
+            --bg: #f3f2ef;
+            --text-dark: #1A1A1A;
+            --text-muted: #6b7280;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            background: var(--bg);
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ===== CARD ===== */
+        .reset-card {
+            background: #fff;
+            width: 100%;
+            max-width: 420px;
+            padding: 32px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .reset-card h2 {
+            font-size: 22px;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .reset-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+        }
+
+        /* ===== INPUT ===== */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-dark);
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 10px;
+            font-size: 15px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="password"]:focus {
+            border-color: var(--primary);
+        }
+
+        /* ===== BUTTON ===== */
+        button {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 24px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #004182;
+        }
+
+        /* ===== FOOTER TEXT ===== */
+        .footer-text {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* ===== MOBILE ===== */
+        @media (max-width: 480px) {
+            .reset-card {
+                margin: 10px;
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="reset-card">
+    <h2>Set a new password</h2>
+    <p>Choose a strong password you haven’t used before.</p>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>New Password</label>
+            <input type="password" name="new_password" required>
+        </div>
+
+        <button type="submit">Reset Password</button>
+    </form>
+
+    <div class="footer-text">
+        Your password will be updated securely.
+    </div>
+</div>
+
+</body>
+</html>

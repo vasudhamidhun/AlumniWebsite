@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fundraising Campaigns</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f3f2ef;
+        }
+
+        /* ================= LAYOUT ================= */
+        .main-content {
+            margin-left: 260px;
+            padding: 40px;
+            min-height: 100vh;
+        }
+
+        /* Alumni layout (no sidebar) */
+        body.alumni .main-content {
+            margin-left: 0;
+            padding-top: 90px;
+        }
+
+        /* ================= HEADER ================= */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-header h2 {
+            color: #1A2A5E;
+        }
+
+        .create-btn {
+            background: #0a66c2;
+            color: white;
+            padding: 10px 22px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .create-btn:hover {
+            background: #004182;
+        }
+
+        /* ================= GRID ================= */
+        .fund-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .fund-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .fund-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .fund-body {
+            padding: 18px;
+        }
+
+        .fund-body h3 {
+            margin-bottom: 10px;
+            color: #0a66c2;
+        }
+
+        .fund-meta {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .progress {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 12px 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #28a745;
+        }
+
+        .fund-desc {
+            font-size: 14px;
+            color: #333;
+            margin-top: 10px;
+        }
+
+        .empty {
+            text-align: center;
+            color: #888;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+
+<body class="{% if not request.user.is_superuser %}alumni{% endif %}">
+
+<!-- ================= NAV / SIDEBAR ================= -->
+{% if role %}
+    {% include 'partials/navbar.html' %}
+
+{% else %}
+   {% include 'partials/adminsidebar.html' %}
+{% endif %}
+
+<!-- ================= MAIN CONTENT ================= -->
+<div class="main-content">
+
+    <div class="page-header">
+        <h2>Fundraising Campaigns</h2>
+        <a href="{% url 'fundraising_create' %}" class="create-btn">
+            + Create Campaign
+        </a>
+    </div>
+
+    {% if fundraisings %}
+    <div class="fund-grid">
+        {% for fund in fundraisings %}
+        <div class="fund-card">
+
+            {% if fund.image %}
+                <img src="{{ fund.image.url }}" alt="{{ fund.title }}">
+            {% endif %}
+
+            <div class="fund-body">
+                <h3>{{ fund.title }}</h3>
+
+                <div class="fund-meta">Donor: {{ fund.donor_name }}</div>
+                <div class="fund-meta">Goal: ₹{{ fund.goal_amount }}</div>
+                <div class="fund-meta">Raised: ₹{{ fund.raised_amount }}</div>
+
+                <!-- Progress Bar -->
+                <div class="progress">
+                    <div class="progress-bar"
+                         style="width: {% widthratio fund.raised_amount fund.goal_amount 100 %}%;">
+                    </div>
+                </div>
+
+                <p class="fund-desc">
+                    {{ fund.description|truncatechars:120 }}
+                </p>
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+        <p class="empty">No fundraising campaigns yet.</p>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
