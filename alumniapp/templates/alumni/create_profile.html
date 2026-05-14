@@ -4,45 +4,109 @@
 <head>
     {% load static %}
     <style>
-        .profile-form {
-    display: flex;
-    flex-direction: column;
-}
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+       
+        height: 100vh;
+        display: flex;
+        justify-content: center;   /* Horizontal center */
+        align-items: center;       /* Vertical center */
+    }
 
-.profile-form h3 {
-    margin-top: 20px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 5px;
-}
+    .profile-container {
+        background: #ffffff;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        width: 500px;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
 
-.profile-form label {
-    margin-top: 10px;
-    font-weight: bold;
-}
+    .profile-container h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
 
-.profile-form input[type="text"],
-.profile-form input[type="number"],
-.profile-form input[type="file"],
-.profile-form textarea {
-    padding: 8px;
-    margin-top: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    width: 100%;
-    box-sizing: border-box;
-}
+    .profile-form {
+        display: flex;
+        flex-direction: column;
+    }
 
-.profile-form textarea {
-    resize: vertical;
-    height: 80px;
-}
+    .profile-form h3 {
+        margin-top: 20px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 5px;
+        color: #555;
+    }
 
-.form-actions {
-    margin-top: 20px;
-}
+    .profile-form label {
+        margin-top: 10px;
+        font-weight: bold;
+        font-size: 14px;
+    }
 
-    </style>
+    .profile-form input[type="text"],
+    .profile-form input[type="number"],
+    .profile-form input[type="file"],
+    .profile-form textarea,
+    .profile-form select {
+        padding: 8px;
+        margin-top: 5px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        width: 100%;
+        box-sizing: border-box;
+        transition: 0.3s;
+    }
+
+    .profile-form input:focus,
+    .profile-form textarea:focus,
+    .profile-form select:focus {
+        border-color: #667eea;
+        outline: none;
+        box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+    }
+
+    .profile-form textarea {
+        resize: vertical;
+        height: 80px;
+    }
+
+    .form-actions {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .btn {
+        padding: 10px 18px;
+        border: none;
+        border-radius: 6px;
+        background: #667eea;
+        color: white;
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .btn:hover {
+        background: #5a67d8;
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+    }
+
+    .btn-secondary:hover {
+        background: #5a6268;
+    }
+</style>
     <meta charset="UTF-8">
     <title>Create Alumni Profile</title>
     <link rel="stylesheet" href="{% static 'css/profile.css' %}">

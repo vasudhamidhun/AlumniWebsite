@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}My Site{% endblock %}</title>
+     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+    {% if role %}
+        {% include 'partials/navbar.html' %}
+    {% else %}
+        {% include 'partials/adminsidebar.html' %}
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+
+</body>
+</html>

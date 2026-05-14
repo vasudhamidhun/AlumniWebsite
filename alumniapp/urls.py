@@ -6,7 +6,6 @@ urlpatterns=[
     #admin
     path("add-comment/<int:post_id>/", add_comment, name="add_comment"),
     path("like/<int:post_id>/", toggle_like, name="toggle_like"),
-
     path('adminlogin/',adminlogin,name="adminlogin"),
     path("admindash/",admindash,name="admindash"),
     path('',index,name="index"),

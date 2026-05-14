@@ -62,7 +62,7 @@
         {% if n.notification_type == "follow" %}
             <a href="{% url 'follow_back' n.sender.id request.session.user_id %}"
                class="follow-back-btn">
-                Follow Back
+
             </a>
         {% endif %}
 

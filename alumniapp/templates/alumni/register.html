@@ -213,7 +213,14 @@
 
     <p class="signin-text">
         Already have an account?
-        <a href="{% url 'alumni_login' %}">Login here</a>
+        {% if role == "student" %}
+        <a href="{% url 'student_login' %}">Login here</a>
+    {% elif role == "alumni" %}
+        <a href="{% url 'alumni_login'  %}">Login here</a>
+     {% elif role == "staff" %}
+        <a href="{% url 'staff_login'  %}">Login here</a>
+    {% endif %}
+
     </p>
 </form>
 

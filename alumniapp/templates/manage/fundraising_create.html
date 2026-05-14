@@ -1,142 +1,133 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Create Fundraising</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% extends 'base.html' %}
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+{% block title %}Create Fundraising{% endblock %}
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f6fa;
-        }
+{% block content %}
 
-        /* ================= MAIN CONTENT ================= */
-        .main-content {
-            margin-left: 260px; /* sidebar width */
-            padding: 40px 50px;
-            min-height: 100vh;
-        }
+<style>
+/* Push content below fixed navbar */
+.main-content {
+    margin-top: 90px; /* navbar height + spacing */
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+    background: #f3f2ef;
+    min-height: 100vh;
+}
 
-        /* Header row */
-        .content-header {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 25px;
-        }
+/* Card container */
+.fund-card {
+    width: 100%;
+    max-width: 650px;
+    background: #ffffff;
+    padding: 35px 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
 
-        .view-btn {
-            padding: 10px 22px;
-            background: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
+/* Title */
+.fund-card h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #0a66c2;
+    font-weight: 600;
+}
 
-        .view-btn:hover {
-            background: #45a049;
-        }
+/* Form spacing */
+.fund-card p {
+    margin-bottom: 18px;
+}
 
-        /* Center form */
-        .form-wrapper {
-            display: flex;
-            justify-content: center;
-        }
+/* Labels */
+.fund-card label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 6px;
+    color: #333;
+}
 
-        form {
-            background: #ffffff;
-            width: 520px;
-            padding: 25px 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 12px rgba(0,0,0,0.1);
-        }
+/* Inputs */
+.fund-card input,
+.fund-card textarea,
+.fund-card select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
 
-        h2 {
-            text-align: center;
-            margin-bottom: 25px;
-            color: #1A2A5E;
-        }
+/* Focus effect */
+.fund-card input:focus,
+.fund-card textarea:focus,
+.fund-card select:focus {
+    border-color: #0a66c2;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(10,102,194,0.1);
+}
 
-        form p {
-            margin-bottom: 18px;
-        }
+/* Textarea resize */
+.fund-card textarea {
+    resize: vertical;
+}
 
-        label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 6px;
-            color: #333;
-        }
+/* Submit button */
+.fund-card button {
+    width: 100%;
+    padding: 12px;
+    background: #0a66c2;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 10px;
+}
 
-        input,
-        textarea,
-        select {
-            width: 100%;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-        }
+.fund-card button:hover {
+    background: #004182;
+}
 
-        textarea {
-            resize: vertical;
-        }
+/* Messages */
+.messages {
+    background: #e6f4ea;
+    border-left: 5px solid #28a745;
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    color: #1e4620;
+    font-weight: 500;
+}
 
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        button:hover {
-            background: #0056b3;
-        }
-
-        /* Messages */
-        .messages {
-            background: #e6ffe6;
-            border-left: 5px solid #28a745;
-            padding: 12px;
-            margin-bottom: 20px;
-            border-radius: 6px;
-            color: #2d572c;
-            font-weight: 500;
-        }
-    </style>
-</head>
-
-<body>
-
-<!-- ================= ADMIN SIDEBAR ================= -->
-{% if role %}
-    {% include 'partials/navbar.html' %}
-
-{% else %}
-   {% include 'partials/adminsidebar.html' %}
-{% endif %}
+/* Responsive */
+@media (max-width: 768px) {
+    .fund-card {
+        padding: 25px;
+    }
+}
+</style>
 
 <div class="main-content">
-    <h2>Create Fundraising Campaign</h2>
+    <div class="fund-card">
+        <h2>Create Fundraising Campaign</h2>
 
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Submit</button>
-    </form>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="messages">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit Campaign</button>
+        </form>
+    </div>
 </div>
 
-</body>
-</html>
+{% endblock %}

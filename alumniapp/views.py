@@ -70,6 +70,21 @@ def admindash(request):
                    'events': upcoming_events
 })
 
+
+def delete_post(request, post_id):
+    if request.method == "POST":
+        post = get_object_or_404(AlumniPost, id=post_id)
+
+        # ✅ Allow only owner (alumni or admin) to delete
+        if (post.alumni and request.user.id == post.alumni.id) or \
+           (post.admin and request.user == post.admin):
+
+            post.delete()
+            messages.success(request, "Post deleted successfully")
+        else:
+            messages.error(request, "Not authorized to delete this post")
+
+    return redirect("admindash")
 def add_staff(request):
     if request.method == 'POST':
         form = StaffForm(request.POST)
@@ -86,8 +101,6 @@ def staff_list(request):
     return render(request, 'admin/staff_list.html', {'staffs': staffs})
 def delete_staff(request, id):
     staff = get_object_or_404(Staff, id=id)
-
-
     staff.delete()
     return redirect('staff_list')
 
@@ -237,7 +250,7 @@ def alumni_register(request,role):
 
             messages.success(
                 request,
-                "Alumni registered successfully. Check your email to verify."
+                " registered successfully. Check your email to verify."
             )
             return redirect('alumni_register',role)
         else:
@@ -790,10 +803,13 @@ def friends_list(request):
     user = RegisterModel.objects.get(id=alumni_id)
     role=user.role
     # Users who both follow and are followed
-    following_ids = Follow.objects.filter(follower=user).values_list("following", flat=True)
-    follower_ids  = Follow.objects.filter(following=user).values_list("follower", flat=True)
+    following_ids = Follow.objects.filter(follower=user).values_list("following",flat=True)
+    follower_ids  = Follow.objects.filter(following=user).values_list("follower",flat=True)
+    print(f"**********************follow \n {following_ids},\n{follower_ids}")
+
 
     mutual_ids = set(following_ids).intersection(set(follower_ids))
+    print(f"mutual ids : {mutual_ids}")
 
     friends = RegisterModel.objects.filter(id__in=mutual_ids)
 
@@ -889,9 +905,10 @@ def add_post(request):
     is_admin = False
 
     # 1️⃣ Admin user
-    if request.user.is_authenticated and request.user.is_superuser:
+    if not role:
         post_user = request.user
         is_admin = True
+        print("iam admin-------------------------------------")
 
     # 2️⃣ Alumni user
     else:
@@ -925,7 +942,7 @@ def add_post(request):
             post=post
         )
 
-        messages.success(request, "Post added successfully!")
+        # messages.success(request, "Post added successfully!")
         return redirect("dashboard")
         if is_admin:
             return redirect("admindash")
@@ -960,6 +977,7 @@ def bookmarked_posts(request):
     posts = AlumniPost.objects.filter(bookmarks=user).order_by("-created_at")
     return render(request, "manage/bookmarked_posts.html", {"posts": posts})
 def fundraising_create(request):
+    role=request.session.get("role")
     if request.method == "POST":
         form = FundraisingForm(request.POST, request.FILES)  # <-- Add request.FILES
         if form.is_valid():
@@ -968,11 +986,12 @@ def fundraising_create(request):
     else:
         form = FundraisingForm()
 
-    return render(request, "manage/fundraising_create.html", {"form": form})
+    return render(request, "manage/fundraising_create.html", {"form": form,"role":role})
 
 def fundraising_list(request):
+    role = request.session.get("role")
     fundraisings = Fundraising.objects.all().order_by("-created_at")
-    return render(request, "manage/fundraising_list.html", {"fundraisings": fundraisings})
+    return render(request, "manage/fundraising_list.html", {"fundraisings": fundraisings,"role":role})
 
 def job_create(request):
 
@@ -1119,6 +1138,7 @@ def ajax_search_friends(request):
     return JsonResponse({"results": results})
 
 def notify_followers(sender, notification_type, post=None, job=None):
+    print(f"sender : {sender} ")
     followers = Follow.objects.filter(following=sender)
 
     for f in followers:
@@ -1174,7 +1194,7 @@ def notifications(request):
 
     return render(request, "notifications.html", {
         "notifications": notifications,
-        "role": role
+        "role": role,
     })
 # “We implemented an AI-inspired recommendation system
 # using similarity matching on alumni attributes like
@@ -1246,13 +1266,18 @@ def dashboard(request):
         recommended = recommend_alumni(data,profile.id)
 
         # Fetch actual objects
-        alumni_ids = [r["profile_id"] for r in recommended if r["role"] == "alumni"]
-        student_ids = [r["profile_id"] for r in recommended if r["role"] == "student"]
-        staff_ids = [r["profile_id"] for r in recommended if r["role"] == "staff"]
+        # alumni_ids = [r["profile_id"] for r in recommended if r["role"] == "alumni"]
+        # student_ids = [r["profile_id"] for r in recommended if r["role"] == "student"]
+        # staff_ids = [r["profile_id"] for r in recommended if r["role"] == "staff"]
 
-        recommended_alumni = AlumniProfile.objects.filter(id__in=alumni_ids)
-        recommended_students = StudentProfile.objects.filter(id__in=student_ids)
-        recommended_staffs = StaffProfile.objects.filter(id__in=staff_ids)
+        recommended_alumni = AlumniProfile.objects.filter(id__in=recommended)
+
+        recommended_students = StudentProfile.objects.none()
+        recommended_staffs = StaffProfile.objects.none()
+
+        recommended_alumni = AlumniProfile.objects.filter(id__in=recommended_alumni)
+        recommended_students = StudentProfile.objects.filter(id__in=recommended_students)
+        recommended_staffs = StaffProfile.objects.filter(id__in=recommended_staffs)
 
     not_count=notification_count
     return render(request, "alumni/newdash.html", {

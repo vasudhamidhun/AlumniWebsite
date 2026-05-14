@@ -8,4 +8,5 @@ admin.site.register(StudentProfile)
 admin.site.register(Student)
 admin.site.register(Staff)
 admin.site.register(AlumniPost)
+admin.site.register(Follow)
 # Register your models here.

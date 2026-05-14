@@ -1,8 +1,10 @@
+from django.contrib import messages
 from django.db import models
 from django.core.validators import RegexValidator
 from django.contrib.auth.hashers import make_password
 from django.core.exceptions import ValidationError
 from django.contrib.auth.tokens import default_token_generator
+from django.shortcuts import get_object_or_404, redirect
 from django.utils import timezone
 from django.contrib.auth.models import User
 
@@ -168,7 +170,6 @@ class AlumniPost(models.Model):
         if self.alumni:
             return f"{self.alumni.username}'s Post"
         return "Post (No User)"
-
 
 class PostLike(models.Model):
     user = models.ForeignKey(RegisterModel, on_delete=models.CASCADE)

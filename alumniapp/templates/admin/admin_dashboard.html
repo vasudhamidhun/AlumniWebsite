@@ -265,6 +265,21 @@
             {% endif %}
 
             <p class="meta">Visibility: {{ post.get_visibility_display }}</p>
+            <form method="POST" action="{% url 'delete_post' post.id %}" style="margin-top:10px;">
+            {% csrf_token %}
+            <button type="submit"  style="
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 8px 14px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: 0.3s;
+    " onclick="return confirm('Are you sure you want to delete this post?');">
+                Delete
+            </button>
+        </form>
         </div>
         {% empty %}
         <p>No posts available.</p>
