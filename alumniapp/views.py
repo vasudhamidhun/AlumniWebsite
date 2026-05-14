@@ -1294,12 +1294,14 @@ def dashboard(request):
     })
 
 
-import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+
+
 
 
 def recommend_alumni(alumni_queryset, user_id, top_n=5):
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.metrics.pairwise import cosine_similarity
+    import pandas as pd
     """
     alumni_queryset : Django queryset of AlumniProfile
     user_id          : Logged-in alumni profile ID
