@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-+g6#@qx#uk=i@ds$gtq&yb(z_it9k0vim1dk)s9_ki2kbe7wub
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['alumniwebsite-3lno.onrender.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
