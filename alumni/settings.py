@@ -143,7 +143,7 @@ EMAIL_USE_TLS = True
 # EMAIL_HOST_PASSWORD = 'mhrl qeyv uivp pnlf'
 
 EMAIL_HOST_USER = os.getenv("midhunvasudha@gmail.com")
-EMAIL_HOST_PASSWORD = os.getenv("mhrl qeyv uivp pnlf")
+EMAIL_HOST_PASSWORD = os.getenv("mhrlqeyvuivppnlf")
 # for chat
 from cryptography.fernet import Fernet
 # MESSAGE_SECRET_KEY = Fernet.generate_key()
