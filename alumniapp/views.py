@@ -354,7 +354,7 @@ def login_view(request, role):
                         send_mail(
                         "Login OTP",
                         f"Your OTP is {otp}",
-                        "vasudhamadhuramath@gmail.com",
+                        "midhunvasudha@gmail.com",
                         [user.email],
                         fail_silently=False,
                         )

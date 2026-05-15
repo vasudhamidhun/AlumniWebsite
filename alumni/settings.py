@@ -135,17 +135,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 import os
 
-EMAIL_HOST_USER = os.getenv("midhunvasudha@gmail.com")
-EMAIL_HOST_PASSWORD = os.getenv("ssix cqbu saiw wwpu")
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'midhunvasudha@gmail.com'
-EMAIL_HOST_PASSWORD = 'ssix cqbu saiw wwpu'
+EMAIL_HOST_PASSWORD = 'mhrl qeyv uivp pnlf'
 
-
+EMAIL_HOST_USER = os.getenv("midhunvasudha@gmail.com")
+EMAIL_HOST_PASSWORD = os.getenv("mhrl qeyv uivp pnlf")
 # for chat
 from cryptography.fernet import Fernet
 # MESSAGE_SECRET_KEY = Fernet.generate_key()
