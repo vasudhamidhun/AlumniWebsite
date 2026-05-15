@@ -139,11 +139,11 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'midhunvasudha@gmail.com'
-# EMAIL_HOST_PASSWORD = 'mhrl qeyv uivp pnlf'
+EMAIL_HOST_USER = 'midhunvasudha@gmail.com'
+EMAIL_HOST_PASSWORD = 'mhrl qeyv uivp pnlf'
 
-EMAIL_HOST_USER = os.getenv("midhunvasudha@gmail.com")
-EMAIL_HOST_PASSWORD = os.getenv("mhrlqeyvuivppnlf")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 # for chat
 from cryptography.fernet import Fernet
 # MESSAGE_SECRET_KEY = Fernet.generate_key()
