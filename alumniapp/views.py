@@ -182,8 +182,7 @@ def student_register(request):
                     fail_silently=True
                 )
             except:
-                pass
-
+                return HttpResponse("An error occur while send email")
             messages.success(
                 request,
                 "Student registered successfully. Check your email to verify."
@@ -252,7 +251,7 @@ def alumni_register(request,role):
                     fail_silently=True
                 )
             except:
-                pass
+                return HttpResponse("An error occur while send email")
 
             messages.success(
                 request,
@@ -360,7 +359,7 @@ def login_view(request, role):
                         fail_silently=False,
                         )
                     except:
-                        pass
+                        return HttpResponse("An error occur while send email")
 
                     messages.success(request, "OTP sent to your registered email")
 
@@ -576,7 +575,7 @@ def send_reset_email(request,role):
             [email]
         )
     except:
-        pass
+        return HttpResponse("An error occur while send email")
 
     messages.success(request, "Reset link sent to your email.")
 
