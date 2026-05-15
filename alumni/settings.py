@@ -133,7 +133,10 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+import os
 
+EMAIL_HOST_USER = os.getenv("midhunvasudha@gmail.com")
+EMAIL_HOST_PASSWORD = os.getenv("ssix cqbu saiw wwpu")
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'

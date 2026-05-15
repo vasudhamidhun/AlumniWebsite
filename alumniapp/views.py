@@ -173,13 +173,16 @@ def student_register(request):
             )
             role="student"
             verify_url = request.build_absolute_uri(f"/verify/{token}/{role}")
-
-            send_mail(
-                "Verify your Student Account",
-                f"Click the link to verify your account:\n{verify_url}",
-                "midhunvasudha@gmail.com",
-                [data['email']],
-            )
+            try:
+                send_mail(
+                    "Verify your Student Account",
+                    f"Click the link to verify your account:\n{verify_url}",
+                    "midhunvasudha@gmail.com",
+                    [data['email']],
+                    fail_silently=True
+                )
+            except:
+                pass
 
             messages.success(
                 request,
@@ -240,13 +243,16 @@ def alumni_register(request,role):
             )
             role=role
             verify_url = request.build_absolute_uri(f"/verify/{token}/{role}")
-
-            send_mail(
-                "Verify your Alumni Account",
-                f"Click the link to verify your account:\n{verify_url}",
-                "midhunvasudha@gmail.com",
-                [data['email']],
-            )
+            try:
+                send_mail(
+                    "Verify your Alumni Account",
+                    f"Click the link to verify your account:\n{verify_url}",
+                    "midhunvasudha@gmail.com",
+                    [data['email']],
+                    fail_silently=True
+                )
+            except:
+                pass
 
             messages.success(
                 request,
@@ -345,14 +351,16 @@ def login_view(request, role):
                     otp = str(random.randint(100000, 999999))
                     request.session["login_otp"] = otp
                     request.session["otp_user_id"] = user.id
-
-                    send_mail(
+                    try:
+                        send_mail(
                         "Login OTP",
                         f"Your OTP is {otp}",
                         "vasudhamadhuramath@gmail.com",
                         [user.email],
                         fail_silently=False,
-                    )
+                        )
+                    except:
+                        pass
 
                     messages.success(request, "OTP sent to your registered email")
 
@@ -560,13 +568,15 @@ def send_reset_email(request,role):
     user.save()
 
     reset_link = request.build_absolute_uri(f"/reset-password/{user.id}/{token}/")
-
-    send_mail(
-        "Reset Your Password",
-        f"Click here to reset your password: {reset_link}",
-        "midhunvasudha@gmail.com",
-        [email]
-    )
+    try:
+        send_mail(
+            "Reset Your Password",
+            f"Click here to reset your password: {reset_link}",
+            "midhunvasudha@gmail.com",
+            [email]
+        )
+    except:
+        pass
 
     messages.success(request, "Reset link sent to your email.")
 
@@ -753,7 +763,8 @@ def follow_user(request, user_id):
             plain_message,
             settings.DEFAULT_FROM_EMAIL,
             [following.email],
-            html_message=html_message
+            html_message=html_message,
+            fail_silently=True
         )
     except Exception as e:
         messages.error(request, f"Email could not be sent: {e}")
