@@ -181,8 +181,8 @@ def student_register(request):
                     [data['email']],
                     fail_silently=True
                 )
-            except:
-                return HttpResponse("An error occur while send email")
+            except Exception  as e:
+                return HttpResponse(f"An error occur while send email{e}")
             messages.success(
                 request,
                 "Student registered successfully. Check your email to verify."
@@ -250,8 +250,8 @@ def alumni_register(request,role):
                     [data['email']],
                     fail_silently=True
                 )
-            except:
-                return HttpResponse("An error occur while send email")
+            except Exception  as e:
+                return HttpResponse(f"An error occur while send email{e}")
 
             messages.success(
                 request,
@@ -358,8 +358,8 @@ def login_view(request, role):
                         [user.email],
                         fail_silently=False,
                         )
-                    except:
-                        return HttpResponse("An error occur while send email")
+                    except Exception  as e:
+                        return HttpResponse(f"An error occur while send email{e}")
 
                     messages.success(request, "OTP sent to your registered email")
 
@@ -574,8 +574,8 @@ def send_reset_email(request,role):
             "midhunvasudha@gmail.com",
             [email]
         )
-    except:
-        return HttpResponse("An error occur while send email")
+    except Exception  as e:
+        return HttpResponse(f"An error occur while send email {e}")
 
     messages.success(request, "Reset link sent to your email.")
 
